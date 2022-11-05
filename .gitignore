@@ -31,3 +31,8 @@ build/
 
 ### VS Code ###
 .vscode/
+
+### Frontend ###
+src/frontend/node_modules/
+
+.apt_generated_tests
