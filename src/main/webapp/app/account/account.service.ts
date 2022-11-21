@@ -1,9 +1,10 @@
 import axios from 'axios';
 import { Store } from 'vuex';
 import VueRouter from 'vue-router';
+import TranslationService from '@/locale/translation.service';
 
 export default class AccountService {
-  constructor(private store: Store<any>, private router: VueRouter) {
+  constructor(private store: Store<any>, private translationService: TranslationService, private router: VueRouter) {
     this.init();
   }
 
@@ -35,6 +36,9 @@ export default class AccountService {
           const account = response.data;
           if (account) {
             this.store.commit('authenticated', account);
+            if (this.store.getters.currentLanguage !== account.langKey) {
+              this.store.commit('currentLanguage', account.langKey);
+            }
             if (sessionStorage.getItem('requested-url')) {
               this.router.replace(sessionStorage.getItem('requested-url'));
               sessionStorage.removeItem('requested-url');
@@ -46,6 +50,7 @@ export default class AccountService {
             }
             sessionStorage.removeItem('requested-url');
           }
+          this.translationService.refreshTranslation(this.store.getters.currentLanguage);
           resolve(true);
         })
         .catch(() => {

@@ -8,6 +8,7 @@ import ResetPasswordInitClass from '@/account/reset-password/init/reset-password
 const localVue = createLocalVue();
 
 config.initVueApp(localVue);
+const i18n = config.initI18N(localVue);
 
 const axiosStub = {
   get: sinon.stub(axios, 'get'),
@@ -21,6 +22,7 @@ describe('Reset Component Init', () => {
   beforeEach(() => {
     axiosStub.post.reset();
     wrapper = shallowMount<ResetPasswordInitClass>(ResetPasswordInit, {
+      i18n,
       localVue,
     });
     resetPasswordInit = wrapper.vm;

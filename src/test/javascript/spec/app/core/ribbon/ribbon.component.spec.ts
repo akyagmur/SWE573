@@ -8,12 +8,15 @@ const localVue = createLocalVue();
 config.initVueApp(localVue);
 const store = config.initVueXStore(localVue);
 
+const i18n = config.initI18N(localVue);
+
 describe('Ribbon', () => {
   let ribbon: RibbonClass;
   let wrapper: Wrapper<RibbonClass>;
 
   const wrap = async (managementInfo?: any) => {
     wrapper = shallowMount<RibbonClass>(Ribbon, {
+      i18n,
       store,
       localVue,
     });

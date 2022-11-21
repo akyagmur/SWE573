@@ -1,6 +1,7 @@
 import { Component, Inject, Vue } from 'vue-property-decorator';
 import LoginService from '@/account/login.service';
 import AccountService from '@/account/account.service';
+import TranslationService from '@/locale/translation.service';
 
 import EntitiesMenu from '@/entities/entities-menu.vue';
 
@@ -12,6 +13,7 @@ import EntitiesMenu from '@/entities/entities-menu.vue';
 export default class JhiNavbar extends Vue {
   @Inject('loginService')
   private loginService: () => LoginService;
+  @Inject('translationService') private translationService: () => TranslationService;
 
   @Inject('accountService') private accountService: () => AccountService;
   public version = 'v' + VERSION;
@@ -19,13 +21,24 @@ export default class JhiNavbar extends Vue {
   private languages: any = this.$store.getters.languages;
   private hasAnyAuthorityValues = {};
 
-  created() {}
+  created() {
+    const currentLanguage = Object.keys(this.languages).includes(navigator.language) ? navigator.language : this.currentLanguage;
+    this.translationService().refreshTranslation(currentLanguage);
+  }
 
   public subIsActive(input) {
     const paths = Array.isArray(input) ? input : [input];
     return paths.some(path => {
       return this.$route.path.indexOf(path) === 0; // current path starts with this path string
     });
+  }
+
+  public changeLanguage(newLanguage: string): void {
+    this.translationService().refreshTranslation(newLanguage);
+  }
+
+  public isActiveLanguage(key: string): boolean {
+    return key === this.$store.getters.currentLanguage;
   }
 
   public logout(): Promise<any> {

@@ -9,7 +9,7 @@ export default class JhiItemCountComponent extends Vue {
   total: number;
   @Prop()
   itemsPerPage: number;
-  i18nEnabled = false;
+  i18nEnabled = true;
 
   get first() {
     return (this.page - 1) * this.itemsPerPage === 0 ? 1 : (this.page - 1) * this.itemsPerPage + 1;

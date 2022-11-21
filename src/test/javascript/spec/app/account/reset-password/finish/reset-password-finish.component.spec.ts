@@ -9,6 +9,7 @@ import LoginService from '@/account/login.service';
 const localVue = createLocalVue();
 
 config.initVueApp(localVue);
+const i18n = config.initI18N(localVue);
 
 const axiosStub = {
   get: sinon.stub(axios, 'get'),
@@ -22,6 +23,7 @@ describe('Reset Component Finish', () => {
   beforeEach(() => {
     axiosStub.post.reset();
     wrapper = shallowMount<ResetPasswordFinishClass>(ResetPasswordFinish, {
+      i18n,
       localVue,
       provide: {
         loginService: () => new LoginService(),

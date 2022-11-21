@@ -11,6 +11,7 @@ import LoginService from '@/account/login.service';
 const localVue = createLocalVue();
 
 config.initVueApp(localVue);
+const i18n = config.initI18N(localVue);
 const store = config.initVueXStore(localVue);
 
 const axiosStub = {
@@ -26,6 +27,7 @@ describe('Activate Component', () => {
     axiosStub.get.resolves({});
 
     wrapper = shallowMount<ActivateClass>(Activate, {
+      i18n,
       localVue,
       provide: {
         activateService: () => new ActivateService(),

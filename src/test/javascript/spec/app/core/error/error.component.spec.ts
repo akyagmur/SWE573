@@ -7,6 +7,7 @@ import LoginService from '@/account/login.service';
 
 const localVue = createLocalVue();
 config.initVueApp(localVue);
+const i18n = config.initI18N(localVue);
 const store = config.initVueXStore(localVue);
 const customErrorMsg = 'An error occurred.';
 
@@ -18,6 +19,7 @@ describe('Error component', () => {
   beforeEach(() => {
     loginService = { openLogin: jest.fn() };
     wrapper = shallowMount<ErrorClass>(Error, {
+      i18n,
       store,
       router,
       localVue,

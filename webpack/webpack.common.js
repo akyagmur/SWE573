@@ -4,6 +4,8 @@ const { merge } = require('webpack-merge');
 const { VueLoaderPlugin } = require('vue-loader');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const { hashElement } = require('folder-hash');
+const MergeJsonWebpackPlugin = require('merge-jsons-webpack-plugin');
 
 const { DefinePlugin, EnvironmentPlugin } = require('webpack');
 const { vueLoaderConfig } = require('./vue.utils');
@@ -15,6 +17,12 @@ function resolve(dir = '') {
 
 module.exports = async (env, options) => {
   const development = options.mode === 'development';
+  const languagesHash = await hashElement(resolve('src/main/webapp/i18n'), {
+    algo: 'md5',
+    encoding: 'hex',
+    files: { include: ['*.json'] },
+  });
+
   return merge(
     {
       mode: options.mode,
@@ -95,6 +103,7 @@ module.exports = async (env, options) => {
           BUILD: 'web',
         }),
         new DefinePlugin({
+          I18N_HASH: JSON.stringify(languagesHash.hash),
           VERSION: JSON.stringify(config.version),
           SERVER_API_URL: JSON.stringify(config.serverApiUrl),
         }),
@@ -126,6 +135,14 @@ module.exports = async (env, options) => {
             // jhipster-needle-add-assets-to-webpack - JHipster will add/remove third-party resources in this array
             { from: './src/main/webapp/robots.txt', to: 'robots.txt' },
           ],
+        }),
+        new MergeJsonWebpackPlugin({
+          output: {
+            groupBy: [
+              { pattern: './src/main/webapp/i18n/en/*.json', fileName: './i18n/en.json' },
+              // jhipster-needle-i18n-language-webpack - JHipster will add/remove languages in this array
+            ],
+          },
         }),
       ],
     },

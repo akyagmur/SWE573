@@ -6,6 +6,7 @@ import * as config from '@/shared/config/config';
 const localVue = createLocalVue();
 config.initVueApp(localVue);
 const store = config.initVueXStore(localVue);
+const i18n = config.initI18N(localVue);
 localVue.component('router-link', {});
 
 describe('Home', () => {
@@ -15,6 +16,7 @@ describe('Home', () => {
 
   beforeEach(() => {
     wrapper = shallowMount<HomeClass>(Home, {
+      i18n,
       store,
       localVue,
       provide: {

@@ -10,6 +10,7 @@ import * as config from '@/shared/config/config';
 const localVue = createLocalVue();
 
 config.initVueApp(localVue);
+const i18n = config.initI18N(localVue);
 const store = config.initVueXStore(localVue);
 
 const axiosStub = {
@@ -23,7 +24,7 @@ describe('Logs Component', () => {
 
   beforeEach(() => {
     axiosStub.get.resolves({});
-    wrapper = shallowMount<LogsClass>(Logs, { store, localVue, provide: { logsService: () => new LogsService() } });
+    wrapper = shallowMount<LogsClass>(Logs, { store, i18n, localVue, provide: { logsService: () => new LogsService() } });
     logs = wrapper.vm;
   });
 

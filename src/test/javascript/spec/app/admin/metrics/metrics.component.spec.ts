@@ -12,6 +12,7 @@ import MetricsService from '@/admin/metrics/metrics.service';
 const localVue = createLocalVue();
 
 config.initVueApp(localVue);
+const i18n = config.initI18N(localVue);
 const store = config.initVueXStore(localVue);
 localVue.component('font-awesome-icon', FontAwesomeIcon);
 localVue.component('metrics-modal', MetricsModal);
@@ -231,6 +232,7 @@ describe('Metrics Component', () => {
     axiosStub.get.resolves({ data: { timers: [], gauges: [] } });
     wrapper = shallowMount<MetricsClass>(Metrics, {
       store,
+      i18n,
       localVue,
       stubs: {
         bModal: true,

@@ -1,27 +1,25 @@
 <template>
   <div>
     <h2>
-      <span id="health-page-heading" data-cy="healthPageHeading">Health Checks</span>
+      <span id="health-page-heading" v-text="$t('health.title')" data-cy="healthPageHeading">Health Checks</span>
       <button class="btn btn-primary float-right" v-on:click="refresh()" :disabled="updatingHealth">
-        <font-awesome-icon icon="sync"></font-awesome-icon> <span>Refresh</span>
+        <font-awesome-icon icon="sync"></font-awesome-icon> <span v-text="$t('health[\'refresh.button\']')">Refresh</span>
       </button>
     </h2>
     <div class="table-responsive">
       <table id="healthCheck" class="table table-striped" aria-describedby="Health check">
         <thead>
           <tr>
-            <th scope="col">Service Name</th>
-            <th class="text-center" scope="col">Status</th>
-            <th class="text-center" scope="col">Details</th>
+            <th v-text="$t('health.table.service')" scope="col">Service Name</th>
+            <th class="text-center" v-text="$t('health.table.status')" scope="col">Status</th>
+            <th class="text-center" v-text="$t('health.details.details')" scope="col">Details</th>
           </tr>
         </thead>
         <tbody>
           <tr v-for="health of healthData" :key="health.name">
-            <td>
-              <span class="text-capitalize">{{ baseName(health.name) }}</span> {{ subSystemName(health.name) }}
-            </td>
+            <td><span v-text="$t('health.indicator.' + baseName(health.name))" /> {{ subSystemName(health.name) }}</td>
             <td class="text-center">
-              <span class="badge" :class="getBadgeClass(health.status)">
+              <span class="badge" :class="getBadgeClass(health.status)" v-text="$t('health.status.' + health.status)">
                 {{ health.status }}
               </span>
             </td>
@@ -36,7 +34,7 @@
     </div>
     <b-modal ref="healthModal">
       <h4 slot="modal-title" v-if="currentHealth" class="modal-title" id="showHealthLabel">
-        <span class="text-capitalize">{{ baseName(currentHealth.name) }}</span>
+        <span v-text="$t('health.indicator.' + baseName(currentHealth.name))" />
         {{ subSystemName(currentHealth.name) }}
       </h4>
       <health-modal :current-health="currentHealth"></health-modal>

@@ -12,6 +12,7 @@ import LoginService from '@/account/login.service';
 const localVue = createLocalVue();
 
 config.initVueApp(localVue);
+const i18n = config.initI18N(localVue);
 const store = config.initVueXStore(localVue);
 
 const axiosStub = {
@@ -30,6 +31,7 @@ describe('Register Component', () => {
 
     wrapper = shallowMount<RegisterClass>(Register, {
       store,
+      i18n,
       localVue,
       provide: {
         registerService: () => new RegisterService(),

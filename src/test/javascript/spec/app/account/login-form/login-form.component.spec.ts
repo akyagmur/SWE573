@@ -3,6 +3,7 @@ import axios from 'axios';
 import sinon from 'sinon';
 import AccountService from '@/account/account.service';
 import VueRouter from 'vue-router';
+import TranslationService from '@/locale/translation.service';
 
 import * as config from '@/shared/config/config';
 import LoginForm from '@/account/login-form/login-form.vue';
@@ -18,6 +19,7 @@ localVue.component('b-form-checkbox', {});
 localVue.component('b-link', {});
 
 config.initVueApp(localVue);
+const i18n = config.initI18N(localVue);
 const store = config.initVueXStore(localVue);
 
 const axiosStub = {
@@ -35,9 +37,10 @@ describe('LoginForm Component', () => {
 
     wrapper = shallowMount<LoginFormClass>(LoginForm, {
       store,
+      i18n,
       localVue,
       provide: {
-        accountService: () => new AccountService(store, new VueRouter()),
+        accountService: () => new AccountService(store, new TranslationService(store, i18n), new VueRouter()),
       },
     });
     loginForm = wrapper.vm;

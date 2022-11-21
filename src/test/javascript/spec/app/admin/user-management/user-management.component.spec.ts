@@ -14,6 +14,7 @@ const localVue = createLocalVue();
 
 localVue.use(ToastPlugin);
 config.initVueApp(localVue);
+const i18n = config.initI18N(localVue);
 const store = config.initVueXStore(localVue);
 localVue.component('font-awesome-icon', FontAwesomeIcon);
 localVue.component('router-link', {});
@@ -44,6 +45,7 @@ describe('UserManagement Component', () => {
     store.commit('authenticated', account);
     wrapper = shallowMount<UserManagementClass>(UserManagement, {
       store,
+      i18n,
       localVue,
       stubs: {
         bPagination: true,

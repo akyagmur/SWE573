@@ -9,6 +9,7 @@ import ChangePasswordClass from '@/account/change-password/change-password.compo
 const localVue = createLocalVue();
 
 config.initVueApp(localVue);
+const i18n = config.initI18N(localVue);
 const store = config.initVueXStore(localVue);
 
 const axiosStub = {
@@ -26,6 +27,7 @@ describe('ChangePassword Component', () => {
 
     wrapper = shallowMount<ChangePasswordClass>(ChangePassword, {
       store,
+      i18n,
       localVue,
     });
     changePassword = wrapper.vm;

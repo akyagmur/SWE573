@@ -10,6 +10,7 @@ import { EMAIL_ALREADY_USED_TYPE } from '@/constants';
 const localVue = createLocalVue();
 
 config.initVueApp(localVue);
+const i18n = config.initI18N(localVue);
 const store = config.initVueXStore(localVue);
 
 const axiosStub = {
@@ -33,6 +34,7 @@ describe('Settings Component', () => {
     store.commit('authenticated', account);
     wrapper = shallowMount<SettingsClass>(Settings, {
       store,
+      i18n,
       localVue,
     });
     settings = wrapper.vm;

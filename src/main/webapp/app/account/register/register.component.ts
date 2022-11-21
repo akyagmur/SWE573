@@ -58,7 +58,7 @@ export default class Register extends Vue {
     this.error = null;
     this.errorUserExists = null;
     this.errorEmailExists = null;
-    this.registerAccount.langKey = 'en';
+    this.registerAccount.langKey = this.$store.getters.currentLanguage;
     this.registerService()
       .processRegistration(this.registerAccount)
       .then(() => {

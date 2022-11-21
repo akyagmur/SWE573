@@ -9,7 +9,7 @@
         <router-view></router-view>
       </div>
       <b-modal id="login-page" hide-footer lazy>
-        <span data-cy="loginTitle" slot="modal-title" id="login-title">Sign in</span>
+        <span data-cy="loginTitle" slot="modal-title" id="login-title" v-text="$t('login.title')">Sign in</span>
         <login-form></login-form>
       </b-modal>
 

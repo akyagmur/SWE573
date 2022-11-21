@@ -10,6 +10,7 @@ import ConfigurationService from '@/admin/configuration/configuration.service';
 const localVue = createLocalVue();
 
 config.initVueApp(localVue);
+const i18n = config.initI18N(localVue);
 const store = config.initVueXStore(localVue);
 
 const axiosStub = {
@@ -27,6 +28,7 @@ describe('Configuration Component', () => {
     });
     wrapper = shallowMount<ConfigurationClass>(Configuration, {
       store,
+      i18n,
       localVue,
       provide: { configurationService: () => new ConfigurationService() },
     });

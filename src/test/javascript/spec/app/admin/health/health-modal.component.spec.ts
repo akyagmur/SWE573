@@ -5,6 +5,7 @@ import HealthModalClass from '@/admin/health/health-modal.component';
 
 const localVue = createLocalVue();
 config.initVueApp(localVue);
+const i18n = config.initI18N(localVue);
 const store = config.initVueXStore(localVue);
 localVue.component('font-awesome-icon', {});
 const healthsService = { getBaseName: jest.fn(), getSubSystemName: jest.fn() };
@@ -18,6 +19,7 @@ describe('Health Modal Component', () => {
       propsData: {
         currentHealth: {},
       },
+      i18n,
       localVue,
       provide: {
         healthService: () => healthsService,
@@ -64,6 +66,7 @@ describe('Health Modal Component for diskSpace', () => {
       propsData: {
         currentHealth: { name: 'diskSpace' },
       },
+      i18n,
       localVue,
       provide: {
         healthService: () => healthsService,

@@ -12,6 +12,7 @@ import HealthService from '@/admin/health/health.service';
 const localVue = createLocalVue();
 
 config.initVueApp(localVue);
+const i18n = config.initI18N(localVue);
 const store = config.initVueXStore(localVue);
 localVue.component('font-awesome-icon', FontAwesomeIcon);
 localVue.component('health-modal', HealthModal);
@@ -29,6 +30,7 @@ describe('Health Component', () => {
     axiosStub.get.resolves({});
     wrapper = shallowMount<HealthClass>(Health, {
       store,
+      i18n,
       localVue,
       stubs: {
         bModal: true,

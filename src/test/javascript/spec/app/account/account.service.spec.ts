@@ -4,6 +4,7 @@ import axios from 'axios';
 import sinon from 'sinon';
 
 import AccountService from '@/account/account.service';
+import TranslationService from '@/locale/translation.service';
 
 import * as config from '@/shared/config/config';
 
@@ -13,6 +14,7 @@ const axiosStub = {
 };
 
 const localVue = createLocalVue();
+let i18n;
 
 let store;
 
@@ -22,12 +24,13 @@ describe('Account Service test suite', () => {
   beforeEach(() => {
     axiosStub.get.reset();
     store = config.initVueXStore(localVue);
+    i18n = config.initI18N(localVue);
   });
 
   it('should init service and do not retrieve account', async () => {
     axiosStub.get.resolves({ data: { 'display-ribbon-on-profiles': 'dev', activeProfiles: ['dev', 'test'] } });
 
-    accountService = await new AccountService(store, router);
+    accountService = await new AccountService(store, new TranslationService(store, i18n), router);
 
     expect(store.getters.logon).toBe(false);
     expect(accountService.authenticated).toBe(false);
@@ -42,7 +45,7 @@ describe('Account Service test suite', () => {
     localStorage.setItem('jhi-authenticationToken', 'token');
 
     axiosStub.get.resolves({});
-    accountService = await new AccountService(store, router);
+    accountService = await new AccountService(store, new TranslationService(store, i18n), router);
 
     expect((<any>router).history.current.fullPath).toBe('/');
     expect(store.getters.logon).toBe(false);
@@ -56,7 +59,7 @@ describe('Account Service test suite', () => {
 
     axiosStub.get.resolves({});
     axiosStub.get.withArgs('api/account').rejects();
-    accountService = await new AccountService(store, router);
+    accountService = await new AccountService(store, new TranslationService(store, i18n), router);
 
     expect((<any>router).history.current.fullPath).toBe('/');
     expect(accountService.authenticated).toBe(false);
@@ -68,7 +71,7 @@ describe('Account Service test suite', () => {
     localStorage.setItem('jhi-authenticationToken', 'token');
 
     axiosStub.get.rejects();
-    accountService = await new AccountService(store, router);
+    accountService = await new AccountService(store, new TranslationService(store, i18n), router);
 
     return accountService.hasAnyAuthorityAndCheckAuth('USER').then((value: boolean) => {
       expect(value).toBe(false);
@@ -81,7 +84,7 @@ describe('Account Service test suite', () => {
     localStorage.setItem('jhi-authenticationToken', 'token');
 
     axiosStub.get.resolves({ data: { authorities: ['USER'] } });
-    accountService = await new AccountService(store, router);
+    accountService = await new AccountService(store, new TranslationService(store, i18n), router);
 
     return accountService.hasAnyAuthorityAndCheckAuth('USER').then((value: boolean) => {
       expect((<any>router).history.current.fullPath).toBe(`/${reqUrl}`);
@@ -93,7 +96,7 @@ describe('Account Service test suite', () => {
   it('should init service as not authentified and not return any authorities admin and not retrieve account', async () => {
     axiosStub.get.resolves({});
     axiosStub.get.withArgs('api/account').rejects();
-    accountService = await new AccountService(store, router);
+    accountService = await new AccountService(store, new TranslationService(store, i18n), router);
 
     return accountService.hasAnyAuthorityAndCheckAuth('ADMIN').then((value: boolean) => {
       expect(value).toBe(false);
@@ -103,7 +106,7 @@ describe('Account Service test suite', () => {
   it('should init service as not authentified and return authority user', async () => {
     axiosStub.get.resolves({});
     axiosStub.get.withArgs('api/account').rejects();
-    accountService = await new AccountService(store, router);
+    accountService = await new AccountService(store, new TranslationService(store, i18n), router);
 
     return accountService.hasAnyAuthorityAndCheckAuth('USER').then((value: boolean) => {
       expect(value).toBe(true);

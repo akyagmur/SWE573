@@ -7,6 +7,7 @@ import MetricsModalClass from '@/admin/metrics/metrics-modal.component';
 const localVue = createLocalVue();
 
 config.initVueApp(localVue);
+const i18n = config.initI18N(localVue);
 const store = config.initVueXStore(localVue);
 
 describe('Metrics Component', () => {
@@ -14,7 +15,7 @@ describe('Metrics Component', () => {
   let metricsModal: MetricsModalClass;
 
   beforeEach(() => {
-    wrapper = shallowMount<MetricsModalClass>(MetricsModal, { store, localVue });
+    wrapper = shallowMount<MetricsModalClass>(MetricsModal, { store, i18n, localVue });
     metricsModal = wrapper.vm;
   });
 

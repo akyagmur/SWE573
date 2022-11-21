@@ -37,6 +37,7 @@ module.exports = {
   },
   snapshotSerializers: ['jest-serializer-vue'],
   globals: {
+    I18N_HASH: 'generated_hash',
     SERVER_API_URL: config.serverApiUrl,
     VERSION: config.version,
     'ts-jest': {
