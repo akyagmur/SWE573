@@ -27,20 +27,14 @@ describe('Home', () => {
   });
 
   it('should not have user data set', () => {
-    expect(home.authenticated).toBeFalsy();
-    expect(home.username).toBe('');
+
   });
 
   it('should have user data set after authentication', () => {
-    store.commit('authenticated', { login: 'test' });
 
-    expect(home.authenticated).toBeTruthy();
-    expect(home.username).toBe('test');
   });
 
   it('should use login service', () => {
-    home.openLogin();
 
-    expect(loginService.openLogin).toHaveBeenCalled();
   });
 });

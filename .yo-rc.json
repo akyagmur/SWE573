@@ -2,6 +2,15 @@
   "generator-jhipster": {
     "applicationType": "monolith",
     "authenticationType": "jwt",
+    "aws": {
+      "applicationName": "swe-573",
+      "awsRegion": "eu-central-1",
+      "bucketName": "swe-573",
+      "dbInstanceClass": "db.t2.micro",
+      "dbName": "swe573",
+      "environmentName": "swe-573-env",
+      "instanceType": "t2.micro"
+    },
     "baseName": "swe573",
     "blueprints": [],
     "buildTool": "maven",
