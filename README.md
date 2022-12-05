@@ -7,9 +7,9 @@
 
 ## Demo
 
-This app is deployed on AWS Elastic Beanstalk. You can access it from [here](http://swe573termproject-env.eba-2qz2xq2m.us-east-2.elasticbeanstalk.com/).
+This app is deployed on AWS Elastic Beanstalk. You can access it from [here](http://swe-573-env.eba-uanhd2iw.eu-central-1.elasticbeanstalk.com).
 
-[http://swe-573-env.eba-uanhd2iw.eu-central-1.elasticbeanstalk.com/](http://swe-573-env.eba-uanhd2iw.eu-central-1.elasticbeanstalk.com/)
+[http://swe-573-env.eba-uanhd2iw.eu-central-1.elasticbeanstalk.com/](http://swe-573-env.eba-uanhd2iw.eu-central-1.elasticbeanstalk.com)
 
 ## Introduction
 
