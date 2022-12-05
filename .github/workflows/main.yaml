@@ -1,0 +1,17 @@
+name: JHipster
+
+on:
+  push:
+    branches:
+    - release/*
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Install Node.js
+      run:  apt-get install -y nodejs
+    - name: Run JHipster command
+      run: jhipster aws
