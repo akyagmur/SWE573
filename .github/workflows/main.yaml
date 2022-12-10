@@ -18,7 +18,7 @@ jobs:
     - uses: actions/checkout@v2
     - name: Install Node.js
       run: |
-        sudo curl -sL https://deb.nodesource.com/setup_16.x | bash -
+        sudo curl -sL https://deb.nodesource.com/setup_16.x | sudo bash -
         sudo apt-get install -y nodejs
     - name: Run JHipster command
       run: jhipster aws

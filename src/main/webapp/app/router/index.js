@@ -7,7 +7,7 @@ Component.registerHooks([
 ]);
 import Router, { RouteConfig } from 'vue-router';
 
-const Home = () => import('@/core/home/home.vue');
+const Home = () => import('@/home/Home.vue');
 const Error = () => import('@/core/error/error.vue');
 import account from '@/router/account';
 import admin from '@/router/admin';
@@ -39,7 +39,6 @@ const router = new Router({
     },
     ...account,
     ...admin,
-    entities,
     ...pages
   ]
 });

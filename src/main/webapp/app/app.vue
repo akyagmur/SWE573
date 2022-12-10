@@ -1,21 +1,20 @@
 <template>
-  <div id="app">
-    <ribbon></ribbon>
-    <div id="app-header">
-      <jhi-navbar></jhi-navbar>
+  <div>
+    <div class="container">
+      <navigation></navigation>
     </div>
-    <div class="container-fluid">
-      <div class="card jh-card">
-        <router-view></router-view>
-      </div>
-      <b-modal id="login-page" hide-footer lazy>
-        <span data-cy="loginTitle" slot="modal-title" id="login-title" v-text="$t('login.title')">Sign in</span>
-        <login-form></login-form>
-      </b-modal>
-
-      <jhi-footer></jhi-footer>
-    </div>
+    <main class="container">
+      <router-view></router-view>
+    </main>
   </div>
 </template>
 
-<script lang="ts" src="./app.component.ts"></script>
+<script>
+import Navigation from '@/core/Navigation.vue';
+export default {
+  name: 'App',
+  components: {
+    'navigation': Navigation
+  }
+};
+</script>

@@ -28,7 +28,7 @@ module.exports = async (env, options) => {
       mode: options.mode,
       context: resolve(),
       entry: {
-        app: './src/main/webapp/app/main.ts',
+        app: './src/main/webapp/app/main.js',
       },
       output: {
         path: resolve('target/classes/static/'),
