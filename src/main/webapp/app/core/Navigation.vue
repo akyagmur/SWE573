@@ -8,7 +8,11 @@
                 <div class="col-4 text-center">
                     <a class="blog-header-logo text-dark" href="#">Short</a>
                 </div>
-                <div class="col-4 d-flex justify-content-end align-items-center">
+                <div class="col-2 d-flex justify-content-end align-items-center">
+                    <input class="form-control form-control-dark" type="text" placeholder="Search" aria-label="Search">
+
+                </div>
+                <div class="col-2 d-flex justify-content-end align-items-center">
                     <a class="link-secondary" href="#" aria-label="Search">
                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" stroke="currentColor"
                             stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="mx-3" role="img"
@@ -18,8 +22,8 @@
                             <path d="M21 21l-5.2-5.2"></path>
                         </svg>
                     </a>
-                    <a class="btn btn-sm btn-outline-secondary" href="#" v-if="!this.$store.getters.authenticated">Sign
-                        up</a>
+                    <router-link class="btn btn-sm btn-outline-secondary" href="#"
+                        v-if="!this.$store.getters.authenticated" to="/register">Register</router-link>
                     <button v-if="!this.$store.getters.authenticated" class="btn btn-sm btn-outline-secondary ms-2"
                         data-bs-toggle="modal" data-bs-target="#loginModal">Login</button>
                     <button v-if="this.$store.getters.authenticated" @click="$store.dispatch('logout')"

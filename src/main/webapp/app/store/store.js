@@ -57,23 +57,6 @@ const store = new Vuex.Store({
                         reject(error);
                     });
             });
-            /* axios
-                .post('api/authenticate', data)
-                .then(result => {
-                    const bearerToken = result.headers.authorization;
-                    if (bearerToken && bearerToken.slice(0, 7) === 'Bearer ') {
-                        const jwt = bearerToken.slice(7, bearerToken.length);
-                        localStorage.setItem('jwt-token', jwt);
-                        console.log('authorization token set')
-                        context.commit('authenticate');
-                    }
-                    this.authenticationError = false;
-
-                    context.dispatch('retrieveAccount');
-                })
-                .catch(() => {
-                    this.authenticationError = true;
-                }); */
         },
         authenticated(context, identity) {
             context.commit('authenticated', identity);
@@ -99,6 +82,19 @@ const store = new Vuex.Store({
                 .catch(() => {
                     context.commit('logout');
                 });
+        },
+        register(context, data) {
+            return new Promise((resolve, reject) => {
+                axios
+                    .post('api/register', data)
+                    .then(result => {
+                        context.commit('authenticate');
+                        resolve(result);
+                    })
+                    .catch(error => {
+                        reject(error);
+                    });
+            });
         }
     },
     getters: {

@@ -28,7 +28,7 @@ import store from './store/store';
 router.beforeEach(async (to, from, next) => {
   if (!to.matched.length) {
     next('/not-found');
-  } else if (to.meta) {
+  } else if (to.meta && localStorage.getItem('jwt-token') && localStorage.getItem('jwt-token') !== 'undefined') {
     store.dispatch('retrieveAccount').then(() => {
       if (to.meta.authorities && to.meta.authorities.length > 0 && !store.getters.hasAnyAuthority(to.meta.authorities)) {
         next('/accessdenied');

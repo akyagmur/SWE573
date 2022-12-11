@@ -9,6 +9,7 @@ import Router, { RouteConfig } from 'vue-router';
 
 const Home = () => import('@/home/Home.vue');
 const Error = () => import('@/core/error/error.vue');
+import Register from '@/account/register/Register.vue';
 
 Vue.use(Router);
 
@@ -20,6 +21,11 @@ const router = new Router({
       path: '/',
       name: 'Home',
       component: Home
+    },
+    {
+      path: '/register',
+      name: 'Register',
+      component: Register
     },
     {
       path: '/forbidden',
