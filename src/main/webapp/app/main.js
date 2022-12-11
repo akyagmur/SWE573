@@ -2,13 +2,11 @@
 // (runtime-only or standalone) has been set in webpack.common with an alias.
 import Vue from 'vue';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
-import { onRequestSuccess, setupAxiosInterceptors } from '@/shared/config/axios-interceptor';
 /* import axios */
 import axios from 'axios';
 import App from './app.vue';
 import Vue2Filters from 'vue2-filters';
 import router from './router';
-import * as config from './shared/config/config';
 import InfiniteLoading from 'vue-infinite-loading';
 
 import '../content/scss/global.scss';
@@ -20,8 +18,6 @@ import * as bootstrap from 'bootstrap'
 
 /* tslint:enable */
 Vue.config.productionTip = false;
-config.initVueApp(Vue);
-config.initFortAwesome(Vue);
 Vue.use(Vue2Filters);
 Vue.prototype.$bootstrap = bootstrap;
 Vue.prototype.$http = axios;
@@ -53,20 +49,3 @@ const vue = new Vue({
   router,
   store
 });
-
-setupAxiosInterceptors(
-  error => {
-    const url = error.response?.config?.url;
-    const status = error.status || error.response.status;
-    if (status === 401) {
-      // Store logged out state.
-      store.commit('logout');
-    }
-    console.log('Unauthorized!');
-    return Promise.reject(error);
-  },
-  error => {
-    console.log('Server error!');
-    return Promise.reject(error);
-  }
-);
