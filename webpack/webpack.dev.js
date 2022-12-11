@@ -1,6 +1,7 @@
 'use strict';
 const BrowserSyncPlugin = require('browser-sync-webpack-plugin');
 const webpack = require('webpack');
+const path = require('path');
 
 const { styleLoaders } = require('./vue.utils');
 const config = require('./config');
@@ -19,7 +20,24 @@ module.exports = (env, options) => {
     optimization: {
       moduleIds: 'named',
     },
-    plugins: [],
+    plugins: [
+      {
+        apply: compiler => {
+          compiler.hooks.afterEmit.tap('AfterEmitPlugin', compilation => {
+            if (options.watch) {
+              // eslint-disable-next-line no-console
+              // run `prettier` on generated files
+              // execute command
+              const filesPath = path.join(__dirname, '../src/main/webapp/');
+              const exec = require('child_process').exec;
+              exec(`prettier -w ${filesPath}`, (error, stdout, stderr) => {
+                console.log(stdout);
+              });
+            }
+          });
+        }
+      }
+    ],
   };
   if (!options.env.WEBPACK_SERVE) return devConfig;
   devConfig.plugins.push(
