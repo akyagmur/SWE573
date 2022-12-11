@@ -31,7 +31,7 @@ module.exports = (env, options) => {
               const filesPath = path.join(__dirname, '../src/main/webapp/');
               const exec = require('child_process').exec;
               exec(`prettier -w ${filesPath}`, (error, stdout, stderr) => {
-                console.log(stdout);
+                console.log("Prettier executed...");
               });
             }
           });

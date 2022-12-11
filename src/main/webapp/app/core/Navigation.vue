@@ -45,7 +45,7 @@
           <button v-if="this.$store.getters.authenticated" @click="$store.dispatch('logout')" class="btn btn-sm btn-outline-secondary ms-2">
             Logout
           </button>
-          <login-modal></login-modal>
+          <login-modal />
         </div>
       </div>
     </header>
