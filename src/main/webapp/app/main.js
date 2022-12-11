@@ -12,7 +12,7 @@ import InfiniteLoading from 'vue-infinite-loading';
 import '../content/scss/global.scss';
 import '../content/scss/vendor.scss';
 /* tslint:disable */
-import * as bootstrap from 'bootstrap'
+import * as bootstrap from 'bootstrap';
 
 // jhipster-needle-add-entity-service-to-main-import - JHipster will import entities services here
 
@@ -47,5 +47,5 @@ const vue = new Vue({
   components: { App },
   template: '<App/>',
   router,
-  store
+  store,
 });

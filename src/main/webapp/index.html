@@ -1,96 +1,92 @@
 <!DOCTYPE html>
 <html class="no-js" lang="en" dir="ltr">
-
-<head>
-  <meta charset="utf-8" />
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>swe573</title>
-  <meta name="description" content="Description for swe573" />
-  <meta name="google" content="notranslate" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-  <meta name="theme-color" content="#000000" />
-  <link rel="icon" href="favicon.ico" />
-  <link rel="manifest" href="manifest.webapp" />
-  <link rel="stylesheet" href="content/css/loading.css" />
-  <style>
-    .bd-placeholder-img {
-      font-size: 1.125rem;
-      text-anchor: middle;
-      -webkit-user-select: none;
-      -moz-user-select: none;
-      user-select: none;
-    }
-
-    @media (min-width: 768px) {
-      .bd-placeholder-img-lg {
-        font-size: 3.5rem;
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>swe573</title>
+    <meta name="description" content="Description for swe573" />
+    <meta name="google" content="notranslate" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="theme-color" content="#000000" />
+    <link rel="icon" href="favicon.ico" />
+    <link rel="manifest" href="manifest.webapp" />
+    <link rel="stylesheet" href="content/css/loading.css" />
+    <style>
+      .bd-placeholder-img {
+        font-size: 1.125rem;
+        text-anchor: middle;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        user-select: none;
       }
-    }
 
-    .b-example-divider {
-      height: 3rem;
-      background-color: rgba(0, 0, 0, .1);
-      border: solid rgba(0, 0, 0, .15);
-      border-width: 1px 0;
-      box-shadow: inset 0 .5em 1.5em rgba(0, 0, 0, .1), inset 0 .125em .5em rgba(0, 0, 0, .15);
-    }
+      @media (min-width: 768px) {
+        .bd-placeholder-img-lg {
+          font-size: 3.5rem;
+        }
+      }
 
-    .b-example-vr {
-      flex-shrink: 0;
-      width: 1.5rem;
-      height: 100vh;
-    }
+      .b-example-divider {
+        height: 3rem;
+        background-color: rgba(0, 0, 0, 0.1);
+        border: solid rgba(0, 0, 0, 0.15);
+        border-width: 1px 0;
+        box-shadow: inset 0 0.5em 1.5em rgba(0, 0, 0, 0.1), inset 0 0.125em 0.5em rgba(0, 0, 0, 0.15);
+      }
 
-    .bi {
-      vertical-align: -.125em;
-      fill: currentColor;
-    }
+      .b-example-vr {
+        flex-shrink: 0;
+        width: 1.5rem;
+        height: 100vh;
+      }
 
-    .nav-scroller {
-      position: relative;
-      z-index: 2;
-      height: 2.75rem;
-      overflow-y: hidden;
-    }
+      .bi {
+        vertical-align: -0.125em;
+        fill: currentColor;
+      }
 
-    .nav-scroller .nav {
-      display: flex;
-      flex-wrap: nowrap;
-      padding-bottom: 1rem;
-      margin-top: -1px;
-      overflow-x: auto;
-      text-align: center;
-      white-space: nowrap;
-      -webkit-overflow-scrolling: touch;
-    }
-  </style>
-</head>
+      .nav-scroller {
+        position: relative;
+        z-index: 2;
+        height: 2.75rem;
+        overflow-y: hidden;
+      }
 
-<body>
-  <!--[if lt IE 9]>
+      .nav-scroller .nav {
+        display: flex;
+        flex-wrap: nowrap;
+        padding-bottom: 1rem;
+        margin-top: -1px;
+        overflow-x: auto;
+        text-align: center;
+        white-space: nowrap;
+        -webkit-overflow-scrolling: touch;
+      }
+    </style>
+  </head>
+
+  <body>
+    <!--[if lt IE 9]>
       <p class="browserupgrade">
         You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve
         your experience.
       </p>
     <![endif]-->
-  <div id="app">
-
-  </div>
-  <noscript>
-    <h1>You must enable JavaScript to view this page.</h1>
-  </noscript>
-  <script type="text/javascript">
-    // show an error message if the app loading takes more than 4 sec
-    window.onload = function () {
-      setTimeout(showError, 4000);
-    };
-    function showError() {
-      var errorElm = document.getElementById('jhipster-error');
-      if (errorElm && errorElm.style) {
-        errorElm.style.display = 'block';
+    <div id="app"></div>
+    <noscript>
+      <h1>You must enable JavaScript to view this page.</h1>
+    </noscript>
+    <script type="text/javascript">
+      // show an error message if the app loading takes more than 4 sec
+      window.onload = function () {
+        setTimeout(showError, 4000);
+      };
+      function showError() {
+        var errorElm = document.getElementById('jhipster-error');
+        if (errorElm && errorElm.style) {
+          errorElm.style.display = 'block';
+        }
       }
-    }
-  </script>
-</body>
-
+    </script>
+  </body>
 </html>
