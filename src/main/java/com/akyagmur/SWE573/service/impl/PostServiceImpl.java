@@ -78,7 +78,7 @@ public class PostServiceImpl implements PostService {
         // order by created_at desc
 
         return postRepository.findAll().stream().map(postMapper::toDto)
-                .sorted((p2, p1) -> p2.getCreated_at().compareTo(p1.getCreated_at()))
+                .sorted((p1, p2) -> p2.getCreated_at().compareTo(p1.getCreated_at()))
                 .collect(Collectors.toCollection(LinkedList::new));
     }
 
