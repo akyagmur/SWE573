@@ -3,7 +3,17 @@
     <header class="blog-header lh-1 py-3">
       <div class="row flex-nowrap justify-content-between align-items-center">
         <div class="col-4 pt-1">
-          <router-link class="link-secondary" to="/">Home</router-link>
+          <router-link class="btn btn-sm btn-outline-secondary" tag="button" to="/">Home</router-link>
+          <!-- Add new post modal button-->
+          <button
+            v-if="this.$store.getters.authenticated"
+            class="btn btn-sm btn-outline-secondary ms-2"
+            data-bs-toggle="modal"
+            data-bs-target="#newPostModal"
+          >
+            New Post
+          </button>
+          <post-create-modal></post-create-modal>
         </div>
         <div class="col-4 text-center">
           <a class="blog-header-logo text-dark" href="#">Short</a>
@@ -70,10 +80,12 @@
 <script>
 /* import login modal */
 import Login from '@/account/login/Login.vue';
+import PostCreateModal from '@/post/PostCreateModal.vue';
 export default {
   name: 'Navigation',
   components: {
     'login-modal': Login,
+    'post-create-modal': PostCreateModal,
   },
 };
 </script>

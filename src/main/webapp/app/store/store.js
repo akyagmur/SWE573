@@ -9,6 +9,7 @@ const store = new Vuex.Store({
   state: {
     userIdentity: null,
     authenticated: false,
+    posts: [],
   },
   mutations: {
     authenticate(state) {
@@ -26,6 +27,9 @@ const store = new Vuex.Store({
       state.authenticated = false;
       state.logon = false;
       localStorage.removeItem('jwt-token');
+    },
+    fetchPosts(state, posts) {
+      state.posts = posts;
     },
   },
   actions: {
@@ -96,6 +100,25 @@ const store = new Vuex.Store({
           });
       });
     },
+    fetchPosts(context) {
+      return new Promise((resolve, reject) => {
+        axios
+          .get('api/posts', {
+            headers: {
+              Authorization: 'Bearer ' + localStorage.getItem('jwt-token') || null,
+            },
+          })
+          .then(result => {
+            context.commit('fetchPosts', result.data);
+            console.log('posts fetched');
+            resolve(result);
+          })
+          .catch(error => {
+            context.commit('logout');
+            reject(error);
+          });
+      });
+    },
   },
   getters: {
     authenticated: state => {
@@ -106,6 +129,9 @@ const store = new Vuex.Store({
     },
     logon: state => {
       return state.logon;
+    },
+    posts: state => {
+      return state.posts;
     },
   },
 });

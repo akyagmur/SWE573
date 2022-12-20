@@ -66,30 +66,6 @@ export default {
         .catch(() => {
           this.authenticationError = true;
         });
-      /* this.$http
-                .post('api/authenticate', data)
-                .then(result => {
-                    const bearerToken = result.headers.authorization;
-                    if (bearerToken && bearerToken.slice(0, 7) === 'Bearer ') {
-                        const jwt = bearerToken.slice(7, bearerToken.length);
-                        if (this.rememberMe) {
-                            localStorage.setItem('jhi-authenticationToken', jwt);
-                            sessionStorage.removeItem('jhi-authenticationToken');
-                        } else {
-                            sessionStorage.setItem('jhi-authenticationToken', jwt);
-                            localStorage.removeItem('jhi-authenticationToken');
-                        }
-                    }
-                    this.authenticationError = false;
-
-                    this.$bootstrap.Modal.getInstance(this.$refs.modal).hide();
-
-                    this.$root.$emit('login');
-                })
-                .catch((e) => {
-                    console.log(e)
-                    this.authenticationError = true;
-                }); */
     },
   },
 };

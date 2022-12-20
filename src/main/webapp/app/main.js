@@ -13,12 +13,18 @@ import '../content/scss/global.scss';
 import '../content/scss/vendor.scss';
 /* tslint:disable */
 import * as bootstrap from 'bootstrap';
-
+import VueToast from 'vue-toast-notification';
+// Import one of the available themes
+//import 'vue-toast-notification/dist/theme-default.css';
+import 'vue-toast-notification/dist/theme-sugar.css';
+// vue-multiselect/dist/vue-multiselect.min.css
+import 'vue-multiselect/dist/vue-multiselect.min.css';
 // jhipster-needle-add-entity-service-to-main-import - JHipster will import entities services here
 
 /* tslint:enable */
 Vue.config.productionTip = false;
 Vue.use(Vue2Filters);
+Vue.use(VueToast);
 Vue.prototype.$bootstrap = bootstrap;
 Vue.prototype.$http = axios;
 Vue.component('font-awesome-icon', FontAwesomeIcon);
@@ -49,3 +55,18 @@ const vue = new Vue({
   router,
   store,
 });
+
+/* add authorization header to axios */
+axios.interceptors.request.use(
+  config => {
+    if (localStorage.getItem('jwt-token') && localStorage.getItem('jwt-token') !== 'undefined') {
+      config.headers = {
+        Authorization: 'Bearer ' + localStorage.getItem('jwt-token'),
+      };
+    }
+    return config;
+  },
+  error => {
+    Promise.reject(error);
+  }
+);
