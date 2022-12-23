@@ -10,6 +10,7 @@ const store = new Vuex.Store({
     userIdentity: null,
     authenticated: false,
     posts: [],
+    tags: [],
   },
   mutations: {
     authenticate(state) {
@@ -30,6 +31,9 @@ const store = new Vuex.Store({
     },
     fetchPosts(state, posts) {
       state.posts = posts;
+    },
+    fetchTags(state, tags) {
+      state.tags = tags;
     },
   },
   actions: {
@@ -119,6 +123,25 @@ const store = new Vuex.Store({
           });
       });
     },
+    fetchTags(context) {
+      return new Promise((resolve, reject) => {
+        axios
+          .get('api/tags', {
+            headers: {
+              Authorization: 'Bearer ' + localStorage.getItem('jwt-token') || null,
+            },
+          })
+          .then(result => {
+            context.commit('fetchTags', result.data);
+            console.log('tags fetched');
+            resolve(result);
+          })
+          .catch(error => {
+            context.commit('logout');
+            reject(error);
+          });
+      });
+    },
   },
   getters: {
     authenticated: state => {
@@ -132,6 +155,9 @@ const store = new Vuex.Store({
     },
     posts: state => {
       return state.posts;
+    },
+    tags: state => {
+      return state.tags;
     },
   },
 });

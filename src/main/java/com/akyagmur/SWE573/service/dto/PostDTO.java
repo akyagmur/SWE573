@@ -3,7 +3,11 @@ package com.akyagmur.swe573.service.dto;
 import java.io.Serializable;
 import java.time.ZonedDateTime;
 import java.util.Objects;
+import java.util.Set;
+
 import javax.validation.constraints.*;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * A DTO for the {@link com.akyagmur.swe573.domain.Post} entity.
@@ -30,6 +34,18 @@ public class PostDTO implements Serializable {
     private ZonedDateTime created_at;
 
     private ZonedDateTime updated_at;
+
+    // tags related to the post Tag model
+    @JsonProperty("tags")
+    private Set<TagDTO> tags;
+
+    public Set<TagDTO> getTags() {
+        return tags;
+    }
+
+    public void setTags(Set<TagDTO> tags) {
+        this.tags = tags;
+    }
 
     public Long getId() {
         return id;

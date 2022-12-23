@@ -2,6 +2,7 @@ package com.akyagmur.swe573.domain;
 
 import java.io.Serializable;
 import java.time.ZonedDateTime;
+import java.util.Set;
 import javax.persistence.*;
 import javax.validation.constraints.*;
 import org.hibernate.annotations.Cache;
@@ -39,6 +40,9 @@ public class Tag implements Serializable {
 
     @Column(name = "updated_by")
     private Long updated_by;
+
+    @ManyToMany(mappedBy = "tags")
+    Set<Post> posts;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
 

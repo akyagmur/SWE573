@@ -36,7 +36,7 @@ export default {
   },
   mounted() {
     this.fetchPosts();
-    this.getTags();
+    this.fetchTags();
   },
   methods: {
     fetchPosts() {
@@ -44,21 +44,10 @@ export default {
         this.$store.dispatch('fetchPosts');
       }
     },
-    getTags(post) {
-      this.$http
-        .get('/api/tags', {
-          headers: {
-            Authorization: 'Bearer ' + localStorage.getItem('jwt-token') || null,
-          },
-        })
-        .then(
-          response => {
-            post.tags = response.data;
-          },
-          error => {
-            console.log(error);
-          }
-        );
+    fetchTags(post) {
+      if (this.$store.getters.tags.length === 0) {
+        this.$store.dispatch('fetchTags');
+      }
     },
   },
 };

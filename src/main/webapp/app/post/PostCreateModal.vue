@@ -46,7 +46,7 @@
                   placeholder="Search or add a tag"
                   label="name"
                   track-by="code"
-                  :options="[]"
+                  :options="this.$store.getters.tags"
                   :multiple="true"
                   :taggable="true"
                   @tag="addTag"
@@ -94,6 +94,7 @@ export default {
       postCreateError: false,
       myModal: null,
       postErrors: {},
+      tags: this.$store.getters.tags || [],
     };
   },
   methods: {
