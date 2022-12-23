@@ -56,6 +56,19 @@ const vue = new Vue({
   store,
 });
 
+Vue.mixin({
+  methods: {
+    convertDateToHumanReadable: function (date) {
+      return new Date(date).toLocaleDateString('en-gb', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+        timeZone: 'utc',
+      });
+    },
+  },
+});
+
 /* add authorization header to axios */
 axios.interceptors.request.use(
   config => {

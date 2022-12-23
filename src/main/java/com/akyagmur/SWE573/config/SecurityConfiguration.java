@@ -85,6 +85,7 @@ public class SecurityConfiguration {
             .antMatchers("/api/admin/**").hasAuthority(AuthoritiesConstants.ADMIN)
             .antMatchers(HttpMethod.GET, "/api/posts").permitAll()
             .antMatchers(HttpMethod.GET, "/api/tags").permitAll()
+            .antMatchers(HttpMethod.GET, "/api/search").permitAll()
             .antMatchers("/api/**").authenticated()
             .antMatchers("/management/health").permitAll()
             .antMatchers("/management/health/**").permitAll()

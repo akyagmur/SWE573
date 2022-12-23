@@ -19,7 +19,14 @@
           <a class="blog-header-logo text-dark" href="#">Short</a>
         </div>
         <div class="col-2 d-flex justify-content-end align-items-center">
-          <input class="form-control form-control-dark" type="text" placeholder="Search" aria-label="Search" />
+          <input
+            class="form-control form-control-dark"
+            type="search"
+            placeholder="Search"
+            aria-label="Search"
+            @keyup.enter="searchPosts"
+            v-model="searchParam"
+          />
         </div>
         <div class="col-2 d-flex justify-content-end align-items-center">
           <a class="link-secondary" href="#" aria-label="Search">
@@ -86,6 +93,16 @@ export default {
   components: {
     'login-modal': Login,
     'post-create-modal': PostCreateModal,
+  },
+  data() {
+    return {
+      searchParam: '',
+    };
+  },
+  methods: {
+    searchPosts() {
+      this.$router.push({ path: '/search?query=' + this.searchParam }).catch(() => {});
+    },
   },
 };
 </script>

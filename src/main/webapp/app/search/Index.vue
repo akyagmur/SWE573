@@ -1,6 +1,6 @@
 <template>
   <div class="row mb-2">
-    <div class="col-md-6" v-for="post in this.$store.getters.posts" :key="post.id">
+    <div class="col-md-6" v-for="post in searchResult" :key="post.id">
       <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
         <div class="col p-4 d-flex flex-column position-static">
           <strong class="d-inline-block mb-2 text-success">Design</strong>
@@ -39,22 +39,25 @@
 <script>
 export default {
   data() {
-    return {};
+    return {
+      query: this.$route.query.query,
+      searchResult: [],
+    };
   },
   mounted() {
-    this.fetchPosts();
-    this.fetchTags();
+    this.search();
   },
   methods: {
-    fetchPosts() {
-      if (this.$store.getters.posts.length === 0) {
-        this.$store.dispatch('fetchPosts');
-      }
+    search() {
+      this.$http.get('/api/search', { params: { query: this.query } }).then(response => {
+        this.searchResult = response.data;
+      });
     },
-    fetchTags(post) {
-      if (this.$store.getters.tags.length === 0) {
-        this.$store.dispatch('fetchTags');
-      }
+  },
+  watch: {
+    $route(to, from) {
+      this.query = to.query.query;
+      this.search();
     },
   },
 };

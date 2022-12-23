@@ -94,4 +94,18 @@ public class PostServiceImpl implements PostService {
         log.debug("Request to delete Post : {}", id);
         postRepository.deleteById(id);
     }
+
+    /**
+     * Search for the post corresponding to the query.
+     */
+    @Override
+    @Transactional(readOnly = true)
+    public List<PostDTO> search(String query) {
+        log.debug("Request to search for a page of Posts for query {}", query);
+        return postRepository.searchAllFields(query)
+                .stream()
+                .map(postMapper::toDto)
+                .sorted((p1, p2) -> p2.getCreated_at().compareTo(p1.getCreated_at()))
+                .collect(Collectors.toCollection(LinkedList::new));
+    }
 }

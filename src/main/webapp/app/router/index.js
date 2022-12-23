@@ -38,7 +38,13 @@ const router = new Router({
       name: 'NotFound',
       component: Error,
       meta: { error404: true }
-    }
+    },
+    /* search */
+    {
+      path: '/search',
+      name: 'Search',
+      component: () => import('@/search/Index.vue')
+    },
   ]
 });
 
