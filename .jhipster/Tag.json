@@ -1,0 +1,35 @@
+{
+  "changelogDate": "20221223075027",
+  "dto": "mapstruct",
+  "fields": [
+    {
+      "fieldName": "name",
+      "fieldType": "String",
+      "fieldValidateRules": ["required", "minlength", "maxlength"],
+      "fieldValidateRulesMaxlength": "20",
+      "fieldValidateRulesMinlength": "3"
+    },
+    {
+      "fieldName": "created_at",
+      "fieldType": "ZonedDateTime"
+    },
+    {
+      "fieldName": "updated_at",
+      "fieldType": "ZonedDateTime"
+    },
+    {
+      "fieldName": "created_by",
+      "fieldType": "Long"
+    },
+    {
+      "fieldName": "updated_by",
+      "fieldType": "Long"
+    }
+  ],
+  "jpaMetamodelFiltering": false,
+  "name": "Tag",
+  "pagination": "no",
+  "readOnly": false,
+  "relationships": [],
+  "service": "serviceImpl"
+}

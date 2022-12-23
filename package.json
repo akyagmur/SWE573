@@ -70,7 +70,7 @@
     "webpack-dev-server": "webpack serve --config webpack/webpack.common.js"
   },
   "config": {
-    "backend_port": 8080,
+    "backend_port": 8888,
     "default_environment": "prod",
     "packaging": "jar"
   },

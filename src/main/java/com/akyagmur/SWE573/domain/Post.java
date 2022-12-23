@@ -2,6 +2,8 @@ package com.akyagmur.swe573.domain;
 
 import java.io.Serializable;
 import java.time.ZonedDateTime;
+import java.util.Set;
+
 import javax.persistence.*;
 import javax.validation.constraints.*;
 import org.hibernate.annotations.Cache;
@@ -48,6 +50,14 @@ public class Post implements Serializable {
 
     @Column(name = "updated_at")
     private ZonedDateTime updated_at;
+
+    @ManyToMany
+    @JoinTable(
+        name = "rel_post__tag",
+        joinColumns = @JoinColumn(name = "post_id"),
+        inverseJoinColumns = @JoinColumn(name = "tag_id")
+    )
+    Set<Tag> tags;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
@@ -153,6 +163,20 @@ public class Post implements Serializable {
 
     public void setUpdated_at(ZonedDateTime updated_at) {
         this.updated_at = updated_at;
+    }
+
+    // many to many relation ship with tag model
+    public Set<Tag> getTags() {
+        return this.tags;
+    }
+
+    public Post tags(Set<Tag> tags) {
+        this.setTags(tags);
+        return this;
+    }
+
+    public void setTags(Set<Tag> tags) {
+        this.tags = tags;
     }
 
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
