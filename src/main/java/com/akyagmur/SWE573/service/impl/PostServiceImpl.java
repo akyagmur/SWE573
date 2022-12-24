@@ -16,6 +16,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 /**
  * Service Implementation for managing {@link Post}.
@@ -73,13 +75,9 @@ public class PostServiceImpl implements PostService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<PostDTO> findAll() {
+    public Page<PostDTO> findAll(Pageable pageable) {
         log.debug("Request to get all Posts");
-        // order by created_at desc
-
-        return postRepository.findAll().stream().map(postMapper::toDto)
-                .sorted((p1, p2) -> p2.getCreated_at().compareTo(p1.getCreated_at()))
-                .collect(Collectors.toCollection(LinkedList::new));
+        return postRepository.findAll(pageable).map(postMapper::toDto);
     }
 
     @Override

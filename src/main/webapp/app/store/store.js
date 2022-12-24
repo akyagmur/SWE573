@@ -11,6 +11,8 @@ const store = new Vuex.Store({
     authenticated: false,
     posts: [],
     tags: [],
+    currentPage: 0,
+    isBusy: false,
   },
   mutations: {
     authenticate(state) {
@@ -30,10 +32,19 @@ const store = new Vuex.Store({
       localStorage.removeItem('jwt-token');
     },
     fetchPosts(state, posts) {
-      state.posts = posts;
+      state.posts.push(...posts);
     },
     fetchTags(state, tags) {
       state.tags = tags;
+    },
+    incrementPageNumber(state) {
+      state.currentPage++;
+    },
+    setPageNumber(state, page) {
+      state.currentPage = page;
+    },
+    isBusy(state, busy) {
+      state.busy = busy;
     },
   },
   actions: {
@@ -105,23 +116,31 @@ const store = new Vuex.Store({
       });
     },
     fetchPosts(context) {
-      return new Promise((resolve, reject) => {
-        axios
-          .get('api/posts', {
-            headers: {
-              Authorization: 'Bearer ' + localStorage.getItem('jwt-token') || null,
-            },
-          })
-          .then(result => {
-            context.commit('fetchPosts', result.data);
-            console.log('posts fetched');
-            resolve(result);
-          })
-          .catch(error => {
-            context.commit('logout');
-            reject(error);
-          });
-      });
+      if (context.state.currentPage !== context.state.currentPage + 1) {
+        context.commit('isBusy', true);
+        return new Promise((resolve, reject) => {
+          axios
+            .get('api/posts', {
+              params: {
+                page: context.state.currentPage,
+              },
+              headers: {
+                Authorization: 'Bearer ' + localStorage.getItem('jwt-token') || null,
+              },
+            })
+            .then(result => {
+              context.commit('fetchPosts', result.data);
+              context.commit('incrementPageNumber');
+              context.commit('isBusy', false);
+              console.log('posts fetched');
+              resolve(result);
+            })
+            .catch(error => {
+              context.commit('logout');
+              reject(error);
+            });
+        });
+      }
     },
     fetchTags(context) {
       return new Promise((resolve, reject) => {
@@ -158,6 +177,9 @@ const store = new Vuex.Store({
     },
     tags: state => {
       return state.tags;
+    },
+    isBusy: state => {
+      return state.isBusy;
     },
   },
 });

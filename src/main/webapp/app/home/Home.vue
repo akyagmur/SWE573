@@ -1,5 +1,5 @@
 <template>
-  <div class="row mb-2">
+  <div class="row mb-2" v-infinite-scroll="loadMore" infinite-scroll-disabled="busy" infinite-scroll-distance="15">
     <div class="col-md-6" v-for="post in this.$store.getters.posts" :key="post.id">
       <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
         <div class="col p-4 d-flex flex-column position-static">
@@ -34,16 +34,27 @@
         </div>
       </div>
     </div>
+
+    <!-- if busy show spinner-->
+    <div class="col-md-12">
+      <div v-if="busy" class="d-flex justify-content-center">
+        <div class="spinner-border" role="status">
+          <span class="visually-hidden">Loading...</span>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 <script>
 export default {
   data() {
-    return {};
+    return {
+      busy: false,
+    };
   },
   mounted() {
-    this.fetchPosts();
     this.fetchTags();
+    this.$store.commit('setPageNumber', 0);
   },
   methods: {
     fetchPosts() {
@@ -55,6 +66,14 @@ export default {
       if (this.$store.getters.tags.length === 0) {
         this.$store.dispatch('fetchTags');
       }
+    },
+    loadMore() {
+      this.busy = true;
+      setTimeout(() => {
+        this.$store.dispatch('fetchPosts').then(() => {
+          this.busy = false;
+        });
+      }, 3000);
     },
   },
 };

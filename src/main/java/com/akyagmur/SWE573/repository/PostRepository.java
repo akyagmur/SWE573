@@ -5,6 +5,7 @@ import com.akyagmur.swe573.service.dto.PostDTO;
 
 import java.util.List;
 
+import org.springframework.data.domain.Slice;
 import org.springframework.data.jpa.repository.*;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;

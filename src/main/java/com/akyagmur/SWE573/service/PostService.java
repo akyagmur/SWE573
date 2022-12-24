@@ -3,6 +3,8 @@ package com.akyagmur.swe573.service;
 import com.akyagmur.swe573.service.dto.PostDTO;
 import java.util.List;
 import java.util.Optional;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 /**
  * Service Interface for managing {@link com.akyagmur.swe573.domain.Post}.
@@ -33,11 +35,12 @@ public interface PostService {
     Optional<PostDTO> partialUpdate(PostDTO postDTO);
 
     /**
-     * Get all the posts.
+     * Get all the contents.
      *
+     * @param pageable the pagination information.
      * @return the list of entities.
      */
-    List<PostDTO> findAll();
+    Page<PostDTO> findAll(Pageable pageable);
 
     /**
      * Get the "id" post.

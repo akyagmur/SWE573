@@ -20,8 +20,8 @@ import 'vue-toast-notification/dist/theme-sugar.css';
 // vue-multiselect/dist/vue-multiselect.min.css
 import 'vue-multiselect/dist/vue-multiselect.min.css';
 // jhipster-needle-add-entity-service-to-main-import - JHipster will import entities services here
-
-/* tslint:enable */
+import infiniteScroll from 'vue-infinite-scroll';
+Vue.use(infiniteScroll);
 Vue.config.productionTip = false;
 Vue.use(Vue2Filters);
 Vue.use(VueToast);
