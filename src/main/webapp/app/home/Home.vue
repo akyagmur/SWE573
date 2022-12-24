@@ -34,8 +34,7 @@
         </div>
       </div>
     </div>
-
-    <!-- if busy show spinner-->
+    <!--if busy show spinner-->
     <div class="col-md-12">
       <div v-if="busy" class="d-flex justify-content-center">
         <div class="spinner-border" role="status">
@@ -53,18 +52,12 @@ export default {
     };
   },
   mounted() {
-    this.fetchTags();
     this.$store.commit('setPageNumber', 0);
   },
   methods: {
     fetchPosts() {
       if (this.$store.getters.posts.length === 0) {
         this.$store.dispatch('fetchPosts');
-      }
-    },
-    fetchTags(post) {
-      if (this.$store.getters.tags.length === 0) {
-        this.$store.dispatch('fetchTags');
       }
     },
     loadMore() {

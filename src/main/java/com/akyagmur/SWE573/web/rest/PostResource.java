@@ -4,15 +4,22 @@ import com.akyagmur.swe573.repository.PostRepository;
 import com.akyagmur.swe573.service.PostService;
 import com.akyagmur.swe573.service.dto.PostDTO;
 import com.akyagmur.swe573.web.rest.errors.BadRequestAlertException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import io.jsonwebtoken.io.IOException;
+
 import java.net.URI;
 import java.net.URISyntaxException;
+
+import org.apache.commons.lang3.StringUtils;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
 import org.springframework.http.HttpHeaders;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+
+import java.util.*;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
-import javax.websocket.server.PathParam;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -158,7 +165,8 @@ public class PostResource {
     public ResponseEntity<List<PostDTO>> getAllPosts(@PageableDefault(size = 5) Pageable pageable) {
         log.debug("REST request to get a page of Contents");
         Page<PostDTO> page = postService.findAll(pageable);
-        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+        HttpHeaders headers = PaginationUtil
+                .generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
 
@@ -190,5 +198,52 @@ public class PostResource {
                 .noContent()
                 .headers(HeaderUtil.createEntityDeletionAlert(applicationName, false, ENTITY_NAME, id.toString()))
                 .build();
+    }
+
+    @PostMapping("/posts/fetch-meta")
+    public Map<String, String> fetchMetaOfUrl(@RequestBody Map<String, String> payload) throws java.io.IOException {
+
+        log.debug("REST request to fetch meta of url : {}", payload);
+
+        String url = payload.get("url");
+        if (!url.startsWith("http")) {
+            url = "http://" + url;
+        }
+
+        log.debug("REST request to fetch meta of url : {}", url);
+
+        Document document = Jsoup.connect(url).get();
+        String title = getMetaTagContent(document, "meta[name=title]");
+        String desc = getMetaTagContent(document, "meta[name=description]");
+        String ogTitle = getMetaTagContent(document, "meta[property=og:title]");
+        String ogDesc = getMetaTagContent(document, "meta[property=og:description]");
+        String ogImage = getMetaTagContent(document, "meta[property=og:image]");
+        String ogImageAlt = getMetaTagContent(document, "meta[property=og:image:alt]");
+
+        Map<String, String> meta = new HashMap<>();
+        meta.put("title", title);
+        meta.put("description", desc);
+        meta.put("ogTitle", ogTitle);
+        meta.put("ogDescription", ogDesc);
+        meta.put("ogImage", ogImage);
+        meta.put("ogImageAlt", ogImageAlt);
+
+        log.debug("REST response to fetch meta of ogImage : {}", meta.get("ogImage"));
+
+        return meta;
+    }
+
+    /**
+     * Returns the given meta tag content
+     *
+     * @param document
+     * @return the meta tag content
+     */
+    private String getMetaTagContent(Document document, String cssQuery) {
+        Element elm = document.select(cssQuery).first();
+        if (elm != null) {
+            return elm.attr("content");
+        }
+        return "";
     }
 }

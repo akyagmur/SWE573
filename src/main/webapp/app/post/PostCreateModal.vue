@@ -8,6 +8,27 @@
         </div>
         <div class="modal-body">
           <form>
+            <!-- post url -->
+            <div class="mb-3 row">
+              <label for="url" class="col-sm-2 col-form-label">URL</label>
+              <div class="col-sm-10">
+                <input v-model="url" type="text" class="form-control" id="url" />
+                <div
+                  v-if="postCreateError && postErrors.url"
+                  class="text-danger"
+                  v-bind:class="{ 'd-block': postCreateError && postErrors.url, 'd-none': !postCreateError || !postErrors.url }"
+                >
+                  {{ postErrors.url }}
+                </div>
+              </div>
+              <!-- fetching details -->
+              <div v-if="isBusy" class="d-flex justify-content-center align-items-center p-2">
+                <div class="spinner-border text-primary" role="status">
+                  <span class="visually-hidden">Loading...</span>
+                </div>
+                <span class="p-2 text-primary">Fetching url details...</span>
+              </div>
+            </div>
             <!-- post title -->
             <div class="mb-3 row">
               <label for="title" class="col-sm-2 col-form-label">Title</label>
@@ -41,31 +62,17 @@
               <label for="tags" class="col-sm-2 col-form-label">Tags</label>
               <div class="col-sm-10">
                 <multiselect
-                  v-model="tags"
+                  v-model="selectedTags"
                   tag-placeholder="Add this as new tag"
                   placeholder="Search or add a tag"
                   label="name"
-                  track-by="code"
+                  track-by="id"
                   :options="this.$store.getters.tags"
                   :multiple="true"
                   :taggable="true"
                   @tag="addTag"
                 >
                 </multiselect>
-              </div>
-            </div>
-            <!-- post url -->
-            <div class="mb-3 row">
-              <label for="url" class="col-sm-2 col-form-label">URL</label>
-              <div class="col-sm-10">
-                <input v-model="url" type="text" class="form-control" id="url" />
-                <div
-                  v-if="postCreateError && postErrors.url"
-                  class="text-danger"
-                  v-bind:class="{ 'd-block': postCreateError && postErrors.url, 'd-none': !postCreateError || !postErrors.url }"
-                >
-                  {{ postErrors.url }}
-                </div>
               </div>
             </div>
           </form>
@@ -89,20 +96,23 @@ export default {
     return {
       title: '',
       content: '',
-      tags: [],
+      selectedTags: [],
       url: '',
       postCreateError: false,
       myModal: null,
       postErrors: {},
-      tags: this.$store.getters.tags || [],
+      isBusy: false,
     };
+  },
+  mounted() {
+    this.fetchTags();
   },
   methods: {
     save() {
       let data = {
         title: this.title,
         content: this.content,
-        tags: this.tags,
+        tags: this.selectedTags || [],
         url: this.url,
       };
       this.$http.post('/api/posts', data).then(
@@ -127,9 +137,14 @@ export default {
     resetPostForm() {
       this.title = '';
       this.content = '';
-      this.tags = '';
+      this.selectedTags = '';
       this.url = '';
       this.postCreateError = false;
+    },
+    fetchTags(post) {
+      if (this.$store.getters.tags.length === 0) {
+        this.$store.dispatch('fetchTags');
+      }
     },
     addTag(newTag) {
       const tag = {
@@ -137,12 +152,36 @@ export default {
       };
       this.$http.post('/api/tags', tag).then(
         response => {
-          this.tags.push(response.data);
+          this.selectedTags.push(response.data);
         },
         error => {
           this.$toast.error('Failed to create tag!');
         }
       );
+    },
+    validateUrl(url) {
+      return url.match(/^(ftp|http|https):\/\/[^ "]+$/);
+    },
+  },
+  watch: {
+    url: function (url) {
+      if (url && !this.validateUrl(url)) {
+        this.url = '';
+        this.$toast.error('Invalid URL!');
+      } else if (url && this.validateUrl(url)) {
+        this.isBusy = true;
+        this.$http.post('/api/posts/fetch-meta', { url: url }).then(
+          response => {
+            let meta = response.data;
+            this.title = meta.ogTitle;
+            this.content = meta.ogDescription;
+            this.isBusy = false;
+          },
+          error => {
+            this.$toast.error('Failed to fetch meta data!');
+          }
+        );
+      }
     },
   },
 };

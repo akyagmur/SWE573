@@ -83,6 +83,7 @@ public class SecurityConfiguration {
             .antMatchers("/api/account/reset-password/init").permitAll()
             .antMatchers("/api/account/reset-password/finish").permitAll()
             .antMatchers("/api/admin/**").hasAuthority(AuthoritiesConstants.ADMIN)
+            .antMatchers(HttpMethod.POST,"/api/posts/fetch-meta").permitAll()
             .antMatchers(HttpMethod.GET, "/api/posts").permitAll()
             .antMatchers(HttpMethod.GET, "/api/tags").permitAll()
             .antMatchers(HttpMethod.GET, "/api/search").permitAll()
