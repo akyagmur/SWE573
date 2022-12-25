@@ -12,8 +12,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.beans.factory.annotation.Value;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import org.springframework.data.annotation.ReadOnlyProperty;
-import org.springframework.data.annotation.Transient;
 
 /**
  * A DTO for the {@link com.akyagmur.swe573.domain.Post} entity.
@@ -48,6 +46,8 @@ public class PostDTO implements Serializable {
     // tags related to the post Tag model
     @JsonProperty("tags")
     private Set<TagDTO> tags;
+
+    private Long created_by;
 
     public Set<TagDTO> getTags() {
         return tags;
@@ -134,6 +134,15 @@ public class PostDTO implements Serializable {
 
     public void setImage_url(String image_url) {
         this.image_url = image_url;
+    }
+
+    /* created_by */
+    public Long getCreated_by() {
+        return created_by;
+    }
+
+    public void setCreated_by(Long created_by) {
+        this.created_by = created_by;
     }
 
     @Override

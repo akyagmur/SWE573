@@ -43,9 +43,6 @@ export default {
         }, 1000);
       }
     },
-    usersPost(userId) {
-      return this.$store.getters.userIdentity?.id === userId;
-    },
     setPostToEdit(post) {
       this.$store.dispatch('setShowPostCreateModal', true).then(() => {
         console.log(post);

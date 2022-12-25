@@ -79,6 +79,9 @@ Vue.mixin({
       }
       return str;
     },
+    isUsersPost(userId) {
+      return this.$store.getters.userIdentity?.id === userId;
+    },
   },
 });
 

@@ -18,14 +18,10 @@
         <a :href="post.url" class="">Continue reading</a> | <a :href="post.url" class="" target="_blank">Go to original URL</a> |
         <font-awesome-icon icon="fa-regular fa-bookmark" style="cursor: pointer" />
         <font-awesome-icon icon="fa-regular fa-heart" style="cursor: pointer" />
-
-        <!-- Edit link -->
       </div>
-      <!-- author name -->
-      <div class="d-flex gap-3 pt-2">
+      <div class="d-flex gap-3 pt-2" v-if="isUsersPost(post.created_by)">
         <font-awesome-icon icon="fa-regular fa-pen-to-square" style="cursor: pointer" @click="setPostToEdit(post)" />
         <font-awesome-icon icon="fa-solid fa-trash" style="cursor: pointer" class="text-danger" />
-        <!-- Delete link -->
       </div>
     </div>
     <div class="col-auto d-none d-lg-block align-self-center">

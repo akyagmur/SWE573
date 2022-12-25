@@ -20,7 +20,7 @@
             <div class="mb-3 row">
               <label for="url" class="col-sm-2 col-form-label">URL</label>
               <div class="col-sm-10">
-                <input v-model="url" type="text" class="form-control" id="url" />
+                <input v-model="url" name="url" type="text" class="form-control" id="url" />
                 <div
                   v-if="postCreateError && postErrors.url"
                   class="text-danger"
@@ -143,7 +143,7 @@ export default {
       let url = '/api/posts';
       let action = 'create';
       if (this.editMode) {
-        method = 'put';
+        method = 'patch';
         url = `/api/posts/${this.post_id}`;
         action = 'update';
       }

@@ -54,9 +54,16 @@
           >
             Login
           </button>
-          <button v-if="this.$store.getters.authenticated" @click="$store.dispatch('logout')" class="btn btn-sm btn-outline-secondary ms-2">
-            Logout
-          </button>
+          <div class="dropdown" v-if="this.$store.getters.authenticated">
+            <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">Profile</button>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="#">My Posts</a></li>
+              <li><a class="dropdown-item" href="#">Spaces</a></li>
+              <li><a class="dropdown-item" href="#">Bookmarks</a></li>
+              <li><router-link class="dropdown-item" to="/profile/edit">Settings</router-link></li>
+              <li><a class="dropdown-item" href="#" @click="$store.dispatch('logout')">Logout</a></li>
+            </ul>
+          </div>
           <login-modal />
         </div>
       </div>

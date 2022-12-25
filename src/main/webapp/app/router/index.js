@@ -11,6 +11,7 @@ const Home = () => import('@/home/Home.vue');
 const Error = () => import('@/core/error/error.vue');
 import Register from '@/account/register/Register.vue';
 import TagPosts from '@/tag/TagPosts.vue';
+import EditProfile from '@/account/profile/EditProfile.vue';
 
 Vue.use(Router);
 
@@ -52,6 +53,11 @@ const router = new Router({
       name: 'Tag',
       component: TagPosts
     },
+    {
+      path: '/profile/edit',
+      name: 'EditProfile',
+      component: EditProfile
+    }
   ]
 });
 

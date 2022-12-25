@@ -141,7 +141,6 @@ public class PostResource {
             @PathVariable(value = "id", required = false) final Long id,
             @NotNull @RequestBody PostDTO postDTO) throws URISyntaxException {
         log.debug("REST request to partial update Post partially : {}, {}", id, postDTO);
-        log.info("null", ENTITY_NAME, postDTO);
         if (postDTO.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }

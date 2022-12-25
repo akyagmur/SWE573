@@ -96,23 +96,27 @@ const store = new Vuex.Store({
       context.commit('logout');
     },
     retrieveAccount(context) {
-      axios
-        .get('api/account', {
-          headers: {
-            Authorization: 'Bearer ' + localStorage.getItem('jwt-token') || null,
-          },
-        })
-        .then(result => {
-          const account = result.data;
-          if (account) {
-            context.commit('authenticated', account);
-          } else {
+      return new Promise((resolve, reject) => {
+        axios
+          .get('api/account', {
+            headers: {
+              Authorization: 'Bearer ' + localStorage.getItem('jwt-token') || null,
+            },
+          })
+          .then(result => {
+            const account = result.data;
+            if (account) {
+              context.commit('authenticated', account);
+            } else {
+              context.commit('logout');
+            }
+            return resolve(account);
+          })
+          .catch(() => {
             context.commit('logout');
-          }
-        })
-        .catch(() => {
-          context.commit('logout');
-        });
+            return reject();
+          });
+      });
     },
     register(context, data) {
       return new Promise((resolve, reject) => {
