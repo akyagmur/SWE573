@@ -1,5 +1,7 @@
 package com.akyagmur.swe573.web.rest;
 
+import com.akyagmur.swe573.domain.Post;
+import com.akyagmur.swe573.domain.Tag;
 import com.akyagmur.swe573.repository.TagRepository;
 import com.akyagmur.swe573.service.TagService;
 import com.akyagmur.swe573.service.dto.TagDTO;
@@ -144,14 +146,14 @@ public class TagResource {
     /**
      * {@code GET  /tags/:id} : get the "id" tag.
      *
-     * @param id the id of the tagDTO to retrieve.
+     * @param name the id of the tagDTO to retrieve.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the tagDTO, or with status {@code 404 (Not Found)}.
      */
-    @GetMapping("/tags/{id}")
-    public ResponseEntity<TagDTO> getTag(@PathVariable Long id) {
-        log.debug("REST request to get Tag : {}", id);
-        Optional<TagDTO> tagDTO = tagService.findOne(id);
-        return ResponseUtil.wrapOrNotFound(tagDTO);
+    @GetMapping("/tags/{name}")
+    public Tag getTag(@PathVariable String name) {
+        log.debug("REST request to get Tag : {}", name);
+        Tag tag = tagRepository.findByName(name).get();
+        return tag;
     }
 
     /**

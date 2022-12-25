@@ -26,7 +26,7 @@ public class Tag implements Serializable {
 
     @NotNull
     @Size(min = 3, max = 20)
-    @Column(name = "name", length = 20, nullable = false)
+    @Column(name = "name", length = 20, nullable = false, unique = true)
     private String name;
 
     @Column(name = "created_at")
@@ -41,10 +41,21 @@ public class Tag implements Serializable {
     @Column(name = "updated_by")
     private Long updated_by;
 
-    @ManyToMany(mappedBy = "tags")
+    @ManyToMany(mappedBy = "tags", fetch = FetchType.EAGER)
     Set<Post> posts;
 
-    // jhipster-needle-entity-add-field - JHipster will add fields here
+    public Set<Post> getPosts() {
+        return this.posts;
+    }
+
+    public Tag posts(Set<Post> posts) {
+        this.setPosts(posts);
+        return this;
+    }
+
+    public void setPosts(Set<Post> posts) {
+        this.posts = posts;
+    }
 
     public Long getId() {
         return this.id;
@@ -122,6 +133,17 @@ public class Tag implements Serializable {
 
     public void setUpdated_by(Long updated_by) {
         this.updated_by = updated_by;
+    }
+
+    @PrePersist
+    public void prePersist() {
+        this.created_at = ZonedDateTime.now();
+        this.updated_at = ZonedDateTime.now();
+    }
+
+    @PreUpdate
+    public void preUpdate() {
+        this.updated_at = ZonedDateTime.now();
     }
 
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here

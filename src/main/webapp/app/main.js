@@ -2,6 +2,13 @@
 // (runtime-only or standalone) has been set in webpack.common with an alias.
 import Vue from 'vue';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
+import { library } from '@fortawesome/fontawesome-svg-core';
+import { fas } from '@fortawesome/free-solid-svg-icons';
+import { far } from '@fortawesome/free-regular-svg-icons';
+
+library.add(fas);
+library.add(far);
+
 /* import axios */
 import axios from 'axios';
 import App from './app.vue';
@@ -65,6 +72,12 @@ Vue.mixin({
         day: 'numeric',
         timeZone: 'utc',
       });
+    },
+    truncateString: function (str, length) {
+      if (str.length > length) {
+        return str.substring(0, length) + '...';
+      }
+      return str;
     },
   },
 });

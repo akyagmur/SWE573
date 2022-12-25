@@ -7,7 +7,13 @@ import java.util.Set;
 
 import javax.validation.constraints.*;
 
+import com.akyagmur.swe573.domain.User;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.springframework.beans.factory.annotation.Value;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.springframework.data.annotation.ReadOnlyProperty;
+import org.springframework.data.annotation.Transient;
 
 /**
  * A DTO for the {@link com.akyagmur.swe573.domain.Post} entity.
@@ -27,13 +33,17 @@ public class PostDTO implements Serializable {
     @Size(min = 0, max = 1000)
     private String content;
 
-    private Long created_by;
-
-    private Long updated_by;
-
     private ZonedDateTime created_at;
 
     private ZonedDateTime updated_at;
+
+    private String image_url;
+
+    @Value("true")
+    private Boolean is_private;
+
+    @JsonIgnore
+    private User author;
 
     // tags related to the post Tag model
     @JsonProperty("tags")
@@ -45,6 +55,21 @@ public class PostDTO implements Serializable {
 
     public void setTags(Set<TagDTO> tags) {
         this.tags = tags;
+    }
+
+    public String getAuthorName() {
+        if (author == null) {
+            return "";
+        }
+        return author.getFirstName() + " " + author.getLastName();
+    }
+
+    public void setAuthor(User author) {
+        this.author = author;
+    }
+
+    public User getAuthor() {
+        return author;
     }
 
     public Long getId() {
@@ -79,22 +104,6 @@ public class PostDTO implements Serializable {
         this.content = content;
     }
 
-    public Long getCreated_by() {
-        return created_by;
-    }
-
-    public void setCreated_by(Long created_by) {
-        this.created_by = created_by;
-    }
-
-    public Long getUpdated_by() {
-        return updated_by;
-    }
-
-    public void setUpdated_by(Long updated_by) {
-        this.updated_by = updated_by;
-    }
-
     public ZonedDateTime getCreated_at() {
         return created_at;
     }
@@ -109,6 +118,22 @@ public class PostDTO implements Serializable {
 
     public void setUpdated_at(ZonedDateTime updated_at) {
         this.updated_at = updated_at;
+    }
+
+    public Boolean getIs_private() {
+        return is_private;
+    }
+
+    public void setIs_private(Boolean is_private) {
+        this.is_private = is_private;
+    }
+
+    public String getImage_url() {
+        return image_url;
+    }
+
+    public void setImage_url(String image_url) {
+        this.image_url = image_url;
     }
 
     @Override
@@ -140,8 +165,6 @@ public class PostDTO implements Serializable {
             ", title='" + getTitle() + "'" +
             ", url='" + getUrl() + "'" +
             ", content='" + getContent() + "'" +
-            ", created_by=" + getCreated_by() +
-            ", updated_by=" + getUpdated_by() +
             ", created_at='" + getCreated_at() + "'" +
             ", updated_at='" + getUpdated_at() + "'" +
             "}";

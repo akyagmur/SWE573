@@ -64,4 +64,12 @@ public interface PostService {
      * @return the list of entities.
      */
     List<PostDTO> search(String query);
+
+    /**
+     * Get all public posts.
+     *
+     * @param pageable the pagination information.
+     * @return the list of public entities.
+     */
+    Page<PostDTO> findAllPublicPosts(Pageable pageable);
 }

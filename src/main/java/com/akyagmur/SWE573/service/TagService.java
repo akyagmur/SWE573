@@ -53,4 +53,12 @@ public interface TagService {
      * @param id the id of the entity.
      */
     void delete(Long id);
+
+    /**
+     * Find by name
+     *
+     * @param name
+     * @return tag with posts
+     */
+    Optional<TagDTO> findByName(String name);
 }

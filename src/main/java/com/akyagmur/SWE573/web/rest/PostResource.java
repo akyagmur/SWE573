@@ -1,5 +1,6 @@
 package com.akyagmur.swe573.web.rest;
 
+import com.akyagmur.swe573.domain.Post;
 import com.akyagmur.swe573.repository.PostRepository;
 import com.akyagmur.swe573.service.PostService;
 import com.akyagmur.swe573.service.dto.PostDTO;
@@ -26,7 +27,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.data.web.SortDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -75,11 +78,12 @@ public class PostResource {
         }
         ;
         PostDTO result = postService.save(postDTO);
+        PostDTO dto = postService.findOne(result.getId()).get();
         return ResponseEntity
                 .created(new URI("/api/posts/" + result.getId()))
                 .headers(HeaderUtil.createEntityCreationAlert(applicationName, false, ENTITY_NAME,
                         result.getId().toString()))
-                .body(postDTO);
+                .body(dto);
     }
 
     /**
@@ -137,6 +141,7 @@ public class PostResource {
             @PathVariable(value = "id", required = false) final Long id,
             @NotNull @RequestBody PostDTO postDTO) throws URISyntaxException {
         log.debug("REST request to partial update Post partially : {}, {}", id, postDTO);
+        log.info("null", ENTITY_NAME, postDTO);
         if (postDTO.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
@@ -162,9 +167,9 @@ public class PostResource {
      *         of posts in body.
      */
     @GetMapping("/posts")
-    public ResponseEntity<List<PostDTO>> getAllPosts(@PageableDefault(size = 5) Pageable pageable) {
+    public ResponseEntity<List<PostDTO>> getAllPosts(@SortDefault(sort = "id", direction = Sort.Direction.DESC) @PageableDefault(size = 5, sort = "id") Pageable pageable) {
         log.debug("REST request to get a page of Contents");
-        Page<PostDTO> page = postService.findAll(pageable);
+        Page<PostDTO> page = postService.findAllPublicPosts(pageable);
         HttpHeaders headers = PaginationUtil
                 .generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
@@ -212,7 +217,7 @@ public class PostResource {
 
         log.debug("REST request to fetch meta of url : {}", url);
 
-        Document document = Jsoup.connect(url).get();
+        Document document = Jsoup.connect(url).userAgent("facebookexternalhit/1.1 (+http://www.facebook.com/externalhit_uatext.php)").get();
         String title = getMetaTagContent(document, "meta[name=title]");
         String desc = getMetaTagContent(document, "meta[name=description]");
         String ogTitle = getMetaTagContent(document, "meta[property=og:title]");

@@ -10,6 +10,7 @@ import Router, { RouteConfig } from 'vue-router';
 const Home = () => import('@/home/Home.vue');
 const Error = () => import('@/core/error/error.vue');
 import Register from '@/account/register/Register.vue';
+import TagPosts from '@/tag/TagPosts.vue';
 
 Vue.use(Router);
 
@@ -44,6 +45,12 @@ const router = new Router({
       path: '/search',
       name: 'Search',
       component: () => import('@/search/Index.vue')
+    },
+    /* show by tag */
+    {
+      path: '/tag/:tag',
+      name: 'Tag',
+      component: TagPosts
     },
   ]
 });

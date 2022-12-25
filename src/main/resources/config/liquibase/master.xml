@@ -14,6 +14,9 @@
     <include file="config/liquibase/changelog/20221220152833_added_entity_Post.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20221223075027_added_entity_Tag.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20221223100318_changelog.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20221224174325_changelog.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20221224175427_changelog.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20221225211815_changelog.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-changelog - JHipster will add liquibase changelogs here -->
     <!-- jhipster-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->
     <!-- jhipster-needle-liquibase-add-incremental-changelog - JHipster will add incremental liquibase changelogs here -->

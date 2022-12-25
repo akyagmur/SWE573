@@ -3,6 +3,7 @@ package com.akyagmur.swe573.service.impl;
 import com.akyagmur.swe573.domain.Tag;
 import com.akyagmur.swe573.repository.TagRepository;
 import com.akyagmur.swe573.service.TagService;
+import com.akyagmur.swe573.service.UserService;
 import com.akyagmur.swe573.service.dto.TagDTO;
 import com.akyagmur.swe573.service.mapper.TagMapper;
 import java.util.LinkedList;
@@ -27,14 +28,19 @@ public class TagServiceImpl implements TagService {
 
     private final TagMapper tagMapper;
 
-    public TagServiceImpl(TagRepository tagRepository, TagMapper tagMapper) {
+    private final UserService userService;
+
+    public TagServiceImpl(TagRepository tagRepository, TagMapper tagMapper, UserService userService) {
         this.tagRepository = tagRepository;
         this.tagMapper = tagMapper;
+        this.userService = userService;
     }
 
     @Override
     public TagDTO save(TagDTO tagDTO) {
         log.debug("Request to save Tag : {}", tagDTO);
+        Long userId = userService.getUserWithAuthorities().get().getId();
+        tagDTO.setCreated_by(userId);
         Tag tag = tagMapper.toEntity(tagDTO);
         tag = tagRepository.save(tag);
         return tagMapper.toDto(tag);
@@ -81,5 +87,12 @@ public class TagServiceImpl implements TagService {
     public void delete(Long id) {
         log.debug("Request to delete Tag : {}", id);
         tagRepository.deleteById(id);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Optional<TagDTO> findByName(String name) {
+        log.debug("Request to get Tag : {}", name);
+        return tagRepository.findByName(name).map(tagMapper::toDto);
     }
 }

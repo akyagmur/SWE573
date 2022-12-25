@@ -5,15 +5,10 @@
         <div class="col-4 pt-1">
           <router-link class="btn btn-sm btn-outline-secondary" tag="button" to="/">Home</router-link>
           <!-- Add new post modal button-->
-          <button
-            v-if="this.$store.getters.authenticated"
-            class="btn btn-sm btn-outline-secondary ms-2"
-            data-bs-toggle="modal"
-            data-bs-target="#newPostModal"
-          >
+          <button v-if="this.$store.getters.authenticated" class="btn btn-sm btn-outline-secondary ms-2" @click="openPostCreateModal">
             New Post
           </button>
-          <post-create-modal></post-create-modal>
+          <post-create-modal v-if="this.$store.getters.showPostCreateModal"></post-create-modal>
         </div>
         <div class="col-4 text-center">
           <a class="blog-header-logo text-dark" href="#">Short</a>
@@ -102,6 +97,12 @@ export default {
   methods: {
     searchPosts() {
       this.$router.push({ path: '/search?query=' + this.searchParam }).catch(() => {});
+    },
+    openPostCreateModal() {
+      this.$store.dispatch('setShowPostCreateModal', true).then(() => {
+        this.$store.commit('setPostToEdit', null);
+        this.$bootstrap.Modal.getOrCreateInstance(document.getElementById('newPostModal')).show();
+      });
     },
   },
 };

@@ -39,7 +39,7 @@ public class Post implements Serializable {
     private String content;
 
     @NotNull
-    @Column(name = "created_by", nullable = false)
+    @Column(name = "created_by", nullable = false, updatable = false)
     private Long created_by;
 
     @Column(name = "updated_by")
@@ -51,6 +51,17 @@ public class Post implements Serializable {
     @Column(name = "updated_at")
     private ZonedDateTime updated_at;
 
+    // default value is true
+    @Column(name = "is_private")
+    private Boolean is_private;
+
+    @Column(name = "image_url")
+    private String image_url;
+
+    @ManyToOne
+    @JoinColumn(name = "created_by", referencedColumnName = "id", insertable = false, updatable = false)
+    private User author;
+
     @ManyToMany
     @JoinTable(
         name = "rel_post__tag",
@@ -58,8 +69,6 @@ public class Post implements Serializable {
         inverseJoinColumns = @JoinColumn(name = "tag_id")
     )
     Set<Tag> tags;
-
-    // jhipster-needle-entity-add-field - JHipster will add fields here
 
     public Long getId() {
         return this.id;
@@ -179,7 +188,40 @@ public class Post implements Serializable {
         this.tags = tags;
     }
 
-    // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
+    public Boolean getIs_private() {
+        return this.is_private;
+    }
+
+    public Post is_private(Boolean is_private) {
+        this.setIs_private(is_private);
+        return this;
+    }
+
+    public void setIs_private(Boolean is_private) {
+        this.is_private = is_private;
+    }
+
+    public String getImage_url() {
+        return this.image_url;
+    }
+
+    public Post image_url(String image_url) {
+        this.setImage_url(image_url);
+        return this;
+    }
+
+    public void setImage_url(String image_url) {
+        this.image_url = image_url;
+    }
+
+    public User getAuthor() {
+        return this.author;
+    }
+
+    @PreUpdate
+    public void preUpdate() {
+        updated_at = ZonedDateTime.now();
+    }
 
     @Override
     public boolean equals(Object o) {

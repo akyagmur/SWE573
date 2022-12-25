@@ -3,11 +3,19 @@
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
-          <h1 class="modal-title fs-5" id="newPostModal">Create Post</h1>
+          <h1 class="modal-title fs-5" id="newPostModal">{{ editMode ? 'Edit' : 'Create' }} Post</h1>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
           <form>
+            <!-- thumbnail of url -->
+            <div class="mb-3 row" v-if="image_url">
+              <label for="thumbnail" class="col-sm-2 col-form-label">Thumbnail</label>
+              <div class="col-sm-10">
+                <img v-if="image_url" v-bind:src="image_url" class="img-thumbnail" />
+                <div v-else class="img-thumbnail"></div>
+              </div>
+            </div>
             <!-- post url -->
             <div class="mb-3 row">
               <label for="url" class="col-sm-2 col-form-label">URL</label>
@@ -75,6 +83,15 @@
                 </multiselect>
               </div>
             </div>
+            <!-- is private checkbox -->
+            <div class="mb-3 row">
+              <div class="col-sm-10 offset-sm-2">
+                <div class="form-check form-switch">
+                  <input class="form-check-input" type="checkbox" id="isPrivate" v-model="is_private" />
+                  <label class="form-check label" for="isPrivate">Private</label>
+                </div>
+              </div>
+            </div>
           </form>
         </div>
         <div class="modal-footer">
@@ -94,14 +111,18 @@ export default {
   },
   data() {
     return {
+      post_id: null,
       title: '',
       content: '',
       selectedTags: [],
       url: '',
+      image_url: '',
+      is_private: false,
       postCreateError: false,
       myModal: null,
       postErrors: {},
       isBusy: false,
+      editMode: false,
     };
   },
   mounted() {
@@ -110,18 +131,30 @@ export default {
   methods: {
     save() {
       let data = {
+        id: this.post_id,
         title: this.title,
         content: this.content,
         tags: this.selectedTags || [],
         url: this.url,
+        image_url: this.image_url,
+        is_private: this.is_private,
       };
-      this.$http.post('/api/posts', data).then(
+      let method = 'post';
+      let url = '/api/posts';
+      let action = 'create';
+      if (this.editMode) {
+        method = 'put';
+        url = `/api/posts/${this.post_id}`;
+        action = 'update';
+      }
+      this.$http[method](url, data).then(
         response => {
           this.$emit('post-created', response.data);
           this.$bootstrap.Modal.getInstance(this.$refs.modal).hide();
-          this.$toast.success('Post created successfully!');
+          this.$toast.success(`Post ${action} successfully!`);
           this.postErrors = {};
           this.resetPostForm();
+          this.$store.commit('setPostToEdit', null);
           this.$store.dispatch('fetchPosts');
         },
         error => {
@@ -130,15 +163,18 @@ export default {
             return acc;
           }, {});
           this.postCreateError = true;
-          this.$toast.error('Failed to create post!');
+          this.$toast.error(`Failed to ${action} post!`);
         }
       );
     },
     resetPostForm() {
+      this.post_id = null;
       this.title = '';
       this.content = '';
       this.selectedTags = '';
       this.url = '';
+      this.image_url = '';
+      this.is_private = false;
       this.postCreateError = false;
     },
     fetchTags(post) {
@@ -163,6 +199,11 @@ export default {
       return url.match(/^(ftp|http|https):\/\/[^ "]+$/);
     },
   },
+  computed: {
+    postToEdit() {
+      return this.$store.getters.postToEdit;
+    },
+  },
   watch: {
     url: function (url) {
       if (url && !this.validateUrl(url)) {
@@ -176,11 +217,28 @@ export default {
             this.title = meta.ogTitle;
             this.content = meta.ogDescription;
             this.isBusy = false;
+            this.image_url = meta.ogImage;
           },
           error => {
+            this.isBusy = false;
             this.$toast.error('Failed to fetch meta data!');
           }
         );
+      }
+    },
+    postToEdit: function (post) {
+      if (post) {
+        this.editMode = true;
+        this.post_id = post.id;
+        this.title = post.title;
+        this.content = post.content;
+        this.selectedTags = post.tags;
+        this.url = post.url;
+        this.image_url = post.image_url;
+        this.is_private = post.is_private;
+      } else {
+        this.editMode = false;
+        this.resetPostForm();
       }
     },
   },

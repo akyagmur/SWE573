@@ -43,9 +43,11 @@ public class PostServiceImpl implements PostService {
     @Override
     public PostDTO save(PostDTO postDTO) {
         log.debug("Request to save Post : {}", postDTO);
-        postDTO.setCreated_by(userService.getUserWithAuthorities().get().getId());
         postDTO.setCreated_at(ZonedDateTime.now());
+        Long userId = userService.getUserWithAuthorities().get().getId();
+
         Post post = postMapper.toEntity(postDTO);
+        post.setCreated_by(userId);
         post = postRepository.save(post);
         return postMapper.toDto(post);
     }
@@ -54,8 +56,18 @@ public class PostServiceImpl implements PostService {
     public PostDTO update(PostDTO postDTO) {
         log.debug("Request to update Post : {}", postDTO);
         Post post = postMapper.toEntity(postDTO);
+        Long userId = userService.getUserWithAuthorities().get().getId();
+        post.setCreated_by(userId);
+        post.setUpdated_by(userId);
         post = postRepository.save(post);
         return postMapper.toDto(post);
+        /* log.debug("Request to update Post : {}", postDTO);
+
+        Post post = postRepository.findById(postDTO.getId()).get();
+        Long userId = userService.getUserWithAuthorities().get().getId();
+        post.setUpdated_by(userId);
+        post = postRepository.save(post);
+        return postMapper.toDto(post); */
     }
 
     @Override
@@ -77,7 +89,15 @@ public class PostServiceImpl implements PostService {
     @Transactional(readOnly = true)
     public Page<PostDTO> findAll(Pageable pageable) {
         log.debug("Request to get all Posts");
+        // order by id desc
         return postRepository.findAll(pageable).map(postMapper::toDto);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Page<PostDTO> findAllPublicPosts(Pageable pageable) {
+        log.debug("Request to get all public Posts");
+        return postRepository.findAllPublicPosts(pageable).map(postMapper::toDto);
     }
 
     @Override

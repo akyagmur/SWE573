@@ -13,6 +13,9 @@ const store = new Vuex.Store({
     tags: [],
     currentPage: 0,
     isBusy: false,
+    fetchMore: true,
+    postToEdit: null,
+    showPostCreateModal: false,
   },
   mutations: {
     authenticate(state) {
@@ -45,6 +48,15 @@ const store = new Vuex.Store({
     },
     isBusy(state, busy) {
       state.busy = busy;
+    },
+    setFetchMore(state, fetchMore) {
+      state.fetchMore = fetchMore;
+    },
+    setPostToEdit(state, post) {
+      state.postToEdit = post;
+    },
+    setShowPostCreateModal(state, show) {
+      state.showPostCreateModal = show;
     },
   },
   actions: {
@@ -132,6 +144,9 @@ const store = new Vuex.Store({
               context.commit('fetchPosts', result.data);
               context.commit('incrementPageNumber');
               context.commit('isBusy', false);
+              if (result.data.length < 5) {
+                context.commit('setFetchMore', false);
+              }
               console.log('posts fetched');
               resolve(result);
             })
@@ -161,6 +176,12 @@ const store = new Vuex.Store({
           });
       });
     },
+    setShowPostCreateModal(context, show) {
+      return new Promise((resolve, reject) => {
+        context.commit('setShowPostCreateModal', show);
+        resolve();
+      });
+    },
   },
   getters: {
     authenticated: state => {
@@ -180,6 +201,15 @@ const store = new Vuex.Store({
     },
     isBusy: state => {
       return state.isBusy;
+    },
+    fetchMore: state => {
+      return state.fetchMore;
+    },
+    postToEdit: state => {
+      return state.postToEdit;
+    },
+    showPostCreateModal: state => {
+      return state.showPostCreateModal;
     },
   },
 });
