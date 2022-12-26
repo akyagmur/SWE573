@@ -1,0 +1,23 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:pro="http://www.liquibase.org/xml/ns/pro" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-latest.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+    <changeSet author="alikenanyagmur (generated)" id="1672083229567-3">
+        <addColumn tableName="comment">
+            <column name="post_id" type="bigint"/>
+        </addColumn>
+    </changeSet>
+    <changeSet author="alikenanyagmur (generated)" id="1672083229567-4">
+        <addForeignKeyConstraint baseColumnNames="created_by" baseTableName="post" constraintName="FKlsqldygtkmj4gw3bxf1x9a0q1" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="jhi_user" validate="true"/>
+    </changeSet>
+    <changeSet author="alikenanyagmur (generated)" id="1672083229567-6">
+        <addForeignKeyConstraint baseColumnNames="post_id" baseTableName="comment" constraintName="FKs1slvnkuemjsq2kj4h3vhx7i1" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="post" validate="true"/>
+    </changeSet>
+    <changeSet author="alikenanyagmur (generated)" id="1672083229567-7">
+        <dropForeignKeyConstraint baseTableName="comment" constraintName="fk_comment__user_id"/>
+    </changeSet>
+    <changeSet author="alikenanyagmur (generated)" id="1672083229567-8">
+        <dropTable tableName="content"/>
+    </changeSet>
+    <changeSet author="alikenanyagmur (generated)" id="1672083229567-9">
+        <dropColumn columnName="user_id" tableName="comment"/>
+    </changeSet>
+</databaseChangeLog>

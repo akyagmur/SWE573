@@ -88,6 +88,7 @@ public class SecurityConfiguration {
             .antMatchers(HttpMethod.GET, "/api/tags").permitAll()
             .antMatchers(HttpMethod.GET, "/api/search").permitAll()
             .antMatchers(HttpMethod.GET, "/api/tags/{id}").permitAll()
+            .antMatchers(HttpMethod.GET, "/api/posts/{id}").permitAll()
             .antMatchers("/api/**").authenticated()
             .antMatchers("/management/health").permitAll()
             .antMatchers("/management/health/**").permitAll()

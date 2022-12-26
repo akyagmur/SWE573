@@ -15,7 +15,8 @@
         }}</span>
       </div>
       <div class="d-flex gap-2 align-items-center justify-content-start">
-        <a :href="post.url" class="">Continue reading</a> | <a :href="post.url" class="" target="_blank">Go to original URL</a> |
+        <a @click="goToPostDetail(post)" style="cursor: pointer" class="text-primary">Continue reading</a> |
+        <a :href="post.url" target="_blank">Go to original URL</a> |
         <font-awesome-icon icon="fa-regular fa-bookmark" style="cursor: pointer" />
         <font-awesome-icon icon="fa-regular fa-heart" style="cursor: pointer" />
       </div>
@@ -46,6 +47,9 @@ export default {
     },
     goToTag(tag) {
       this.$router.push({ name: 'Tag', params: { tag: tag.name } });
+    },
+    goToPostDetail(post) {
+      this.$router.push({ name: 'PostDetail', params: { id: post.id } });
     },
   },
 };

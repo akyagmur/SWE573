@@ -16,11 +16,9 @@ import com.akyagmur.swe573.repository.UserRepository;
 import com.akyagmur.swe573.service.EmailAlreadyUsedException;
 import com.akyagmur.swe573.service.UserService;
 import com.akyagmur.swe573.service.dto.EditProfileDTO;
-import com.akyagmur.swe573.service.dto.UserDTO;
 import com.akyagmur.swe573.web.rest.errors.LoginAlreadyUsedException;
 
 import io.swagger.v3.oas.annotations.parameters.RequestBody;
-import tech.jhipster.web.util.HeaderUtil;
 import tech.jhipster.web.util.ResponseUtil;
 
 @RestController

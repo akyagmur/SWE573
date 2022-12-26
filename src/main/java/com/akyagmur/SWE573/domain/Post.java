@@ -2,6 +2,7 @@ package com.akyagmur.swe573.domain;
 
 import java.io.Serializable;
 import java.time.ZonedDateTime;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.*;
@@ -61,6 +62,9 @@ public class Post implements Serializable {
     @ManyToOne
     @JoinColumn(name = "created_by", referencedColumnName = "id", insertable = false, updatable = false)
     private User author;
+
+    @OneToMany(mappedBy = "post")
+    private List<Comment> comments;
 
     @ManyToMany
     @JoinTable(
@@ -216,6 +220,20 @@ public class Post implements Serializable {
 
     public User getAuthor() {
         return this.author;
+    }
+
+    // comment model
+    public List<Comment> getComments() {
+        return this.comments;
+    }
+
+    public Post comments(List<Comment> comments) {
+        this.setComments(comments);
+        return this;
+    }
+
+    public void setComments(List<Comment> comments) {
+        this.comments = comments;
     }
 
     @PreUpdate

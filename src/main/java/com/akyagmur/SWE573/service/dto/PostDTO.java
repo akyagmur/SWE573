@@ -2,6 +2,7 @@ package com.akyagmur.swe573.service.dto;
 
 import java.io.Serializable;
 import java.time.ZonedDateTime;
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
@@ -47,6 +48,9 @@ public class PostDTO implements Serializable {
     @JsonProperty("tags")
     private Set<TagDTO> tags;
 
+    @JsonProperty("comments")
+    private List<CommentDTO> comments;
+
     private Long created_by;
 
     public Set<TagDTO> getTags() {
@@ -55,6 +59,14 @@ public class PostDTO implements Serializable {
 
     public void setTags(Set<TagDTO> tags) {
         this.tags = tags;
+    }
+
+    public List<CommentDTO> getComments() {
+        return comments;
+    }
+
+    public void setComments(List<CommentDTO> comments) {
+        this.comments = comments;
     }
 
     public String getAuthorName() {

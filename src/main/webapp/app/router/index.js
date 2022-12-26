@@ -12,7 +12,7 @@ const Error = () => import('@/core/error/error.vue');
 import Register from '@/account/register/Register.vue';
 import TagPosts from '@/tag/TagPosts.vue';
 import EditProfile from '@/account/profile/EditProfile.vue';
-
+import PostDetail from '@/home/PostDetail.vue';
 Vue.use(Router);
 
 // prettier-ignore
@@ -57,6 +57,11 @@ const router = new Router({
       path: '/profile/edit',
       name: 'EditProfile',
       component: EditProfile
+    },
+    {
+      path: '/post/:id',
+      name: 'PostDetail',
+      component: PostDetail
     }
   ]
 });

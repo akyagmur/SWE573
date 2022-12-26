@@ -1,0 +1,44 @@
+{
+  "changelogDate": "20221226191315",
+  "dto": "mapstruct",
+  "fields": [
+    {
+      "fieldName": "comment",
+      "fieldType": "String",
+      "fieldValidateRules": ["required", "minlength", "maxlength"],
+      "fieldValidateRulesMaxlength": "500",
+      "fieldValidateRulesMinlength": "3"
+    },
+    {
+      "fieldName": "created_at",
+      "fieldType": "ZonedDateTime"
+    },
+    {
+      "fieldName": "updated_at",
+      "fieldType": "ZonedDateTime"
+    },
+    {
+      "fieldName": "created_by",
+      "fieldType": "Long"
+    },
+    {
+      "fieldName": "updated_by",
+      "fieldType": "Long"
+    }
+  ],
+  "jpaMetamodelFiltering": false,
+  "name": "Comment",
+  "pagination": "no",
+  "readOnly": false,
+  "relationships": [
+    {
+      "otherEntityField": "login",
+      "otherEntityName": "user",
+      "otherEntityRelationshipName": "comment",
+      "ownerSide": true,
+      "relationshipName": "user",
+      "relationshipType": "many-to-one"
+    }
+  ],
+  "service": "serviceImpl"
+}
