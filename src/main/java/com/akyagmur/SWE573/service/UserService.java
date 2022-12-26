@@ -8,6 +8,7 @@ import com.akyagmur.swe573.repository.UserRepository;
 import com.akyagmur.swe573.security.AuthoritiesConstants;
 import com.akyagmur.swe573.security.SecurityUtils;
 import com.akyagmur.swe573.service.dto.AdminUserDTO;
+import com.akyagmur.swe573.service.dto.EditProfileDTO;
 import com.akyagmur.swe573.service.dto.UserDTO;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
@@ -216,6 +217,28 @@ public class UserService {
                 return user;
             })
             .map(AdminUserDTO::new);
+    }
+
+    /**
+     * Update user.
+     *
+     * @param login the login of the user to delete.
+     */
+    public Optional<EditProfileDTO> updateUser(EditProfileDTO editProfileDTO) {
+        return userRepository
+            .findOneByLogin(editProfileDTO.getLogin())
+            .map(user -> {
+                user.setLogin(editProfileDTO.getLogin().toLowerCase());
+                user.setFirstName(editProfileDTO.getFirstName());
+                user.setLastName(editProfileDTO.getLastName());
+                if (editProfileDTO.getEmail() != null) {
+                    user.setEmail(editProfileDTO.getEmail().toLowerCase());
+                }
+                this.clearUserCaches(user);
+                log.debug("Changed Information for User: {}", user);
+                return user;
+            })
+            .map(EditProfileDTO::new);
     }
 
     public void deleteUser(String login) {

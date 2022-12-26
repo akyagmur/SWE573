@@ -15,6 +15,7 @@ import com.akyagmur.swe573.domain.User;
 import com.akyagmur.swe573.repository.UserRepository;
 import com.akyagmur.swe573.service.EmailAlreadyUsedException;
 import com.akyagmur.swe573.service.UserService;
+import com.akyagmur.swe573.service.dto.EditProfileDTO;
 import com.akyagmur.swe573.service.dto.UserDTO;
 import com.akyagmur.swe573.web.rest.errors.LoginAlreadyUsedException;
 
@@ -24,19 +25,19 @@ import tech.jhipster.web.util.ResponseUtil;
 
 @RestController
 @RequestMapping("/api")
-public class ShortUserResource {
+public class ProfileResource {
 
     private final Logger log = LoggerFactory.getLogger(UserResource.class);
     private UserRepository userRepository;
     private UserService userService;
 
-    public ShortUserResource(UserRepository userRepository, UserService userService) {
+    public ProfileResource(UserRepository userRepository, UserService userService) {
         this.userRepository = userRepository;
         this.userService = userService;
     }
 
     @PostMapping("/profile/update")
-    public ResponseEntity<UserDTO> updateUser(@Valid @RequestBody UserDTO userDTO) {
+    public ResponseEntity<EditProfileDTO> updateUser(@Valid @RequestBody EditProfileDTO userDTO) {
         log.debug("REST request to update User : {}", userDTO);
         Optional<User> existingUser = userRepository.findOneByEmailIgnoreCase(userDTO.getEmail());
         if (existingUser.isPresent() && (!existingUser.get().getId().equals(userDTO.getId()))) {
@@ -46,7 +47,7 @@ public class ShortUserResource {
         if (existingUser.isPresent() && (!existingUser.get().getId().equals(userDTO.getId()))) {
             throw new LoginAlreadyUsedException();
         }
-        Optional<UserDTO> updatedUser = userService.updateUser(userDTO);
+        Optional<EditProfileDTO> updatedUser = userService.updateUser(userDTO);
 
         return ResponseUtil.wrapOrNotFound(updatedUser);
     }

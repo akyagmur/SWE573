@@ -26,11 +26,11 @@
           <!-- Password -->
           <div class="form-group">
             <label for="password">Password</label>
-            <input type="password" class="form-control" id="password" v-model="userAccount.password" required />
+            <input type="password" class="form-control" id="password" v-model="userAccount.password" />
           </div>
           <div class="form-group">
             <label for="confirmPassword">Confirm password</label>
-            <input type="password" class="form-control" id="confirmPassword" v-model="userAccount.confirmPassword" required />
+            <input type="password" class="form-control" id="confirmPassword" v-model="userAccount.confirmPassword" />
           </div>
           <div class="form-group mt-2">
             <button class="btn btn-primary" type="submit">Save</button>
@@ -55,9 +55,10 @@ export default {
   },
   methods: {
     save() {
-      this.$http.put('api/account', this.userAccount).then(() => {
+      this.$http.post('api/account', this.userAccount).then(() => {
         this.$store.dispatch('retrieveAccount').then(account => {
           this.userAccount = account;
+          this.$toast.success('Profile saved!');
         });
       });
     },
