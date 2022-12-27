@@ -7,10 +7,10 @@
 
 ## Demo
 
-This app is deployed on AWS Elastic Beanstalk. You can access it
-from [here](http://swe-573-env.eba-uanhd2iw.eu-central-1.elasticbeanstalk.com).
+This app is deployed on AWS EC2 as dockerized. You can access it
+from [here](http://3.124.115.84/).
 
-[http://swe-573-env.eba-uanhd2iw.eu-central-1.elasticbeanstalk.com/](http://swe-573-env.eba-uanhd2iw.eu-central-1.elasticbeanstalk.com)
+[http://3.124.115.84/](http://3.124.115.84/)
 
 ## Introduction
 
