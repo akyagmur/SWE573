@@ -4,6 +4,10 @@ import java.io.Serializable;
 import java.time.ZonedDateTime;
 import javax.persistence.*;
 import javax.validation.constraints.*;
+
+import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -14,6 +18,7 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 @Table(name = "comment")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 @SuppressWarnings("common-java:DuplicatedBlocks")
+/*.*/
 public class Comment implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -47,6 +52,25 @@ public class Comment implements Serializable {
     @ManyToOne
     @JoinColumn(name = "post_id", insertable = false, updatable = false)
     private Post post;
+
+    public Post getPost() {
+        return post;
+    }
+
+    public void setPost(Post post) {
+        this.post = post;
+    }
+
+    public Long getPostId() {
+        return postId;
+    }
+
+    public void setPostId(Long postId) {
+        this.postId = postId;
+    }
+
+    @Column(name = "post_id")
+    private Long postId;
 
     public Long getId() {
         return this.id;

@@ -1,12 +1,23 @@
 package com.akyagmur.swe573.web.rest;
 
+import com.akyagmur.swe573.domain.Comment;
+import com.akyagmur.swe573.domain.Post;
 import com.akyagmur.swe573.repository.CommentRepository;
+import com.akyagmur.swe573.repository.PostRepository;
 import com.akyagmur.swe573.service.CommentService;
+import com.akyagmur.swe573.service.PostService;
+import com.akyagmur.swe573.service.UserService;
 import com.akyagmur.swe573.service.dto.CommentDTO;
+import com.akyagmur.swe573.service.dto.PostDTO;
 import com.akyagmur.swe573.web.rest.errors.BadRequestAlertException;
+
+import lombok.RequiredArgsConstructor;
+
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.time.ZonedDateTime;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import javax.validation.Valid;
@@ -37,9 +48,18 @@ public class CommentResource {
 
     private final CommentRepository commentRepository;
 
-    public CommentResource(CommentService commentService, CommentRepository commentRepository) {
+    private final PostService postService;
+
+    private final PostRepository postRepository;
+
+    private final UserService userService;
+
+    public CommentResource(CommentService commentService, CommentRepository commentRepository, PostService postService, PostRepository postRepository, UserService userService) {
         this.commentService = commentService;
         this.commentRepository = commentRepository;
+        this.postService = postService;
+        this.postRepository = postRepository;
+        this.userService = userService;
     }
 
     /**
@@ -50,12 +70,20 @@ public class CommentResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PostMapping("/comments")
-    public ResponseEntity<CommentDTO> createComment(@Valid @RequestBody CommentDTO commentDTO) throws URISyntaxException {
-        log.debug("REST request to save Comment : {}", commentDTO);
-        if (commentDTO.getId() != null) {
-            throw new BadRequestAlertException("A new comment cannot already have an ID", ENTITY_NAME, "idexists");
-        }
-        CommentDTO result = commentService.save(commentDTO);
+    public ResponseEntity<CommentDTO> createComment(@Valid @RequestBody Map<String, String> payload) throws URISyntaxException {
+        String comment = payload.get("comment");
+        Long postId = Long.parseLong(payload.get("postId"));
+        Long userId =  userService.getUserWithAuthorities().get().getId();
+
+        Comment commentEntity = new Comment();
+        commentEntity.setComment(comment);
+        commentEntity.setPostId(postId);
+        commentEntity.setCreated_by(userId);
+        commentEntity.setCreated_at(ZonedDateTime.now());
+        commentRepository.save(commentEntity);
+
+        CommentDTO result = commentService.findOne(commentEntity.getId()).get();
+
         return ResponseEntity
             .created(new URI("/api/comments/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, false, ENTITY_NAME, result.getId().toString()))
