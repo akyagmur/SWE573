@@ -11,13 +11,4 @@
     <changeSet author="alikenanyagmur (generated)" id="1672083229567-6">
         <addForeignKeyConstraint baseColumnNames="post_id" baseTableName="comment" constraintName="FKs1slvnkuemjsq2kj4h3vhx7i1" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="post" validate="true"/>
     </changeSet>
-    <changeSet author="alikenanyagmur (generated)" id="1672083229567-7">
-        <dropForeignKeyConstraint baseTableName="comment" constraintName="fk_comment__user_id"/>
-    </changeSet>
-    <changeSet author="alikenanyagmur (generated)" id="1672083229567-8">
-        <dropTable tableName="content"/>
-    </changeSet>
-    <changeSet author="alikenanyagmur (generated)" id="1672083229567-9">
-        <dropColumn columnName="user_id" tableName="comment"/>
-    </changeSet>
 </databaseChangeLog>
