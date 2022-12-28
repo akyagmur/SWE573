@@ -2,7 +2,10 @@
   <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
     <div class="col p-4 d-flex flex-column position-static">
       <h6 class="mb-0 fw-bold">{{ post.title }}</h6>
-      <div class="mb-1 text-muted">{{ convertDateToHumanReadable(post.created_at) }} by {{ post.authorName }}</div>
+      <div class="mb-1 text-muted">
+        {{ convertDateToHumanReadable(post.created_at) }} by
+        <router-link :to="'/posts/by-user/' + post.authorLogin">{{ post.authorLogin }}</router-link>
+      </div>
       <!-- truncate post content -->
       <p class="mb-auto">
         {{ truncateString(post.content, 100) }}

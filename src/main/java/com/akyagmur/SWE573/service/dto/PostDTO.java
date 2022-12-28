@@ -10,6 +10,8 @@ import javax.validation.constraints.*;
 
 import com.akyagmur.swe573.domain.User;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import org.hibernate.validator.constraints.URL;
 import org.springframework.beans.factory.annotation.Value;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -26,10 +28,11 @@ public class PostDTO implements Serializable {
     @Size(min = 3, max = 500)
     private String title;
 
+    @URL
     private String url;
 
     @NotNull
-    @Size(min = 0, max = 1000)
+    @Size(min = 3, max = 1000)
     private String content;
 
     private ZonedDateTime created_at;
@@ -74,6 +77,13 @@ public class PostDTO implements Serializable {
             return "";
         }
         return author.getFirstName() + " " + author.getLastName();
+    }
+
+    public String getAuthorLogin() {
+        if (author == null) {
+            return "";
+        }
+        return author.getLogin();
     }
 
     public void setAuthor(User author) {

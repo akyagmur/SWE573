@@ -13,6 +13,9 @@ import Register from '@/account/register/Register.vue';
 import TagPosts from '@/tag/TagPosts.vue';
 import EditProfile from '@/account/profile/EditProfile.vue';
 import PostDetail from '@/home/PostDetail.vue';
+import MyPosts from '@/profile/MyPosts.vue';
+import UserPosts from '@/profile/UserPosts.vue';
+import Activate from '@/profile/Activate.vue';
 Vue.use(Router);
 
 // prettier-ignore
@@ -62,6 +65,21 @@ const router = new Router({
       path: '/post/:id',
       name: 'PostDetail',
       component: PostDetail
+    },
+    {
+      path: '/profile/my-posts',
+      name: 'MyPosts',
+      component: MyPosts
+    },
+    {
+      path: '/posts/by-user/:login',
+      name: 'UserPosts',
+      component: UserPosts
+    },
+    {
+      path: '/account/activate',
+      name: 'Activate',
+      component: Activate
     }
   ]
 });

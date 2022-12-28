@@ -1,9 +1,12 @@
 package com.akyagmur.swe573.web.rest;
 
 import com.akyagmur.swe573.domain.Post;
+import com.akyagmur.swe573.domain.User;
 import com.akyagmur.swe573.repository.PostRepository;
 import com.akyagmur.swe573.service.PostService;
+import com.akyagmur.swe573.service.UserService;
 import com.akyagmur.swe573.service.dto.PostDTO;
+import com.akyagmur.swe573.service.dto.UserDTO;
 import com.akyagmur.swe573.web.rest.errors.BadRequestAlertException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -56,9 +59,12 @@ public class PostResource {
 
     private final PostRepository postRepository;
 
-    public PostResource(PostService postService, PostRepository postRepository) {
+    private final UserService userService;
+
+    public PostResource(PostService postService, PostRepository postRepository, UserService userService) {
         this.postService = postService;
         this.postRepository = postRepository;
+        this.userService = userService;
     }
 
     /**
@@ -166,9 +172,51 @@ public class PostResource {
      *         of posts in body.
      */
     @GetMapping("/posts")
-    public ResponseEntity<List<PostDTO>> getAllPosts(@SortDefault(sort = "id", direction = Sort.Direction.DESC) @PageableDefault(size = 5, sort = "id") Pageable pageable) {
+    public ResponseEntity<List<PostDTO>> getAllPosts(
+            @SortDefault(sort = "id", direction = Sort.Direction.DESC) @PageableDefault(size = 5, sort = "id") Pageable pageable) {
         log.debug("REST request to get a page of Contents");
         Page<PostDTO> page = postService.findAllPublicPosts(pageable);
+        HttpHeaders headers = PaginationUtil
+                .generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+        return ResponseEntity.ok().headers(headers).body(page.getContent());
+    }
+
+    /**
+     * Return posts by user
+     *
+     * @param pageable
+     * @return
+     */
+    @GetMapping("/posts/my-posts")
+    public ResponseEntity<List<PostDTO>> getMyPosts(
+            @SortDefault(sort = "id", direction = Sort.Direction.DESC) @PageableDefault(size = 5, sort = "id") Pageable pageable) {
+        log.debug("REST request to get a page of Contents");
+        Long userId = userService.getUserWithAuthorities().get().getId();
+        Page<PostDTO> page = postService.findAllPostsOfUser(pageable, userId);
+        HttpHeaders headers = PaginationUtil
+                .generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+        return ResponseEntity.ok().headers(headers).body(page.getContent());
+    }
+
+    /**
+     * Return posts by user
+     *
+     * @param pageable
+     * @return
+     */
+    @GetMapping("/posts/user-posts/{login}")
+    public ResponseEntity<List<PostDTO>> getPostsByUser(
+            @SortDefault(sort = "id", direction = Sort.Direction.DESC) @PageableDefault(size = 5, sort = "id") Pageable pageable,
+            @PathVariable String login) {
+        log.debug("REST request to get a page of Contents");
+        User user = userService.getUserWithAuthoritiesByLogin(login).get();
+        User currentUser = userService.getUserWithAuthorities().get();
+        Page<PostDTO> page;
+        if (user.getId().equals(currentUser.getId())) {
+            page = postService.findAllPostsOfUser(pageable, user.getId());
+        } else {
+            page = postService.findAllPublicPostsOfUser(pageable, user.getId());
+        }
         HttpHeaders headers = PaginationUtil
                 .generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
@@ -216,7 +264,8 @@ public class PostResource {
 
         log.debug("REST request to fetch meta of url : {}", url);
 
-        Document document = Jsoup.connect(url).userAgent("facebookexternalhit/1.1 (+http://www.facebook.com/externalhit_uatext.php)").get();
+        Document document = Jsoup.connect(url)
+                .userAgent("facebookexternalhit/1.1 (+http://www.facebook.com/externalhit_uatext.php)").get();
         String title = getMetaTagContent(document, "meta[name=title]");
         String desc = getMetaTagContent(document, "meta[name=description]");
         String ogTitle = getMetaTagContent(document, "meta[property=og:title]");

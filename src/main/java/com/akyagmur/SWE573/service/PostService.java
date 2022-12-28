@@ -72,4 +72,20 @@ public interface PostService {
      * @return the list of public entities.
      */
     Page<PostDTO> findAllPublicPosts(Pageable pageable);
+
+    /**
+     * Get all posts of a user.
+     *
+     * @param pageable the pagination information.
+     * @param userId the id of the user.
+     */
+    Page<PostDTO> findAllPostsOfUser(Pageable pageable, Long userId);
+
+    /**
+     * Get all public posts of a user.
+     *
+     * @param pageable the pagination information.
+     * @param userId the id of the user.
+     */
+    Page<PostDTO> findAllPublicPostsOfUser(Pageable pageable, Long userId);
 }

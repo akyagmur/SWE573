@@ -9,6 +9,7 @@ import javax.persistence.*;
 import javax.validation.constraints.*;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.validator.constraints.URL;
 
 /**
  * A Post.
@@ -31,6 +32,7 @@ public class Post implements Serializable {
     @Column(name = "title", length = 500, nullable = false)
     private String title;
 
+    @URL
     @Column(name = "url")
     private String url;
 

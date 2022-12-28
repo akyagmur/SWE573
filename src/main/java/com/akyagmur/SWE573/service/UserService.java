@@ -122,7 +122,7 @@ public class UserService {
             newUser.setEmail(userDTO.getEmail().toLowerCase());
         }
         newUser.setImageUrl(userDTO.getImageUrl());
-        newUser.setLangKey(userDTO.getLangKey());
+        newUser.setLangKey("en");
         // new user is not active
         newUser.setActivated(false);
         // new user gets registration key
@@ -151,6 +151,7 @@ public class UserService {
         user.setLogin(userDTO.getLogin().toLowerCase());
         user.setFirstName(userDTO.getFirstName());
         user.setLastName(userDTO.getLastName());
+        user.setLangKey("en");
         if (userDTO.getEmail() != null) {
             user.setEmail(userDTO.getEmail().toLowerCase());
         }

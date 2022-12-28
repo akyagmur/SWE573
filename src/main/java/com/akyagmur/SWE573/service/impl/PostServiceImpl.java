@@ -126,4 +126,18 @@ public class PostServiceImpl implements PostService {
                 .sorted((p1, p2) -> p2.getCreated_at().compareTo(p1.getCreated_at()))
                 .collect(Collectors.toCollection(LinkedList::new));
     }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Page<PostDTO> findAllPostsOfUser(Pageable pageable, Long userId) {
+        log.debug("Request to get all Posts by user id : {}", userId);
+        return postRepository.findAllPostsByUserId(userId, pageable).map(postMapper::toDto);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Page<PostDTO> findAllPublicPostsOfUser(Pageable pageable, Long userId) {
+        log.debug("Request to get all Posts by user id : {}", userId);
+        return postRepository.findAllPublicPostsByUserId(userId, pageable).map(postMapper::toDto);
+    }
 }

@@ -48,10 +48,12 @@ spring:
     # Remove 'faker' if you do not want the sample data to be loaded automatically
     contexts: dev, faker
   mail:
-    host: localhost
-    port: 25
-    username:
-    password:
+    host: smtp.mailtrap.io
+    port: 2525
+    username: 3e1bf9b3da58f3
+    password: c3b36ce81e7ea7
+    protocol: smtp
+    tls: true
   messages:
     cache-duration: PT1S # 1 second, see the ISO 8601 standard
   thymeleaf:

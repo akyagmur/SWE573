@@ -2,10 +2,12 @@
   <div class="row g-5">
     <div class="col-md-8">
       <h3 class="pb-4 mb-4 fst-italic border-bottom">From the Firehose</h3>
-
       <article class="blog-post">
         <h2 class="blog-post-title mb-1">{{ post.title }}</h2>
-        <p class="blog-post-meta">{{ convertDateToHumanReadable(post.created_at) }} by {{ post.authorName }}</p>
+        <p class="blog-post-meta">
+          {{ convertDateToHumanReadable(post.created_at) }} by
+          <router-link :to="'/posts/by-user/' + post.authorLogin">{{ post.authorLogin }}</router-link>
+        </p>
         <!-- tags -->
         <div class="d-flex gap-2 mb-1 text-muted">
           <span v-for="tag in post.tags" :key="tag.id" class="badge bg-secondary" style="cursor: pointer" @click="goToTag(tag)">{{
@@ -122,6 +124,9 @@ export default {
     },
     resetComment() {
       this.comment = '';
+    },
+    goToTag(tag) {
+      this.$router.push({ name: 'Tag', params: { tag: tag.name } });
     },
   },
 };
