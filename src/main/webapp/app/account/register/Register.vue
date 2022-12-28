@@ -79,7 +79,6 @@ export default {
           email: this.email,
           password: this.password,
         };
-        console.log(data);
         this.$store.dispatch('register', data).then(() => {
           this.registerSuccess = 'OK';
         });

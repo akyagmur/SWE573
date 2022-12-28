@@ -16,6 +16,7 @@ const store = new Vuex.Store({
     fetchMore: true,
     postToEdit: null,
     showPostCreateModal: false,
+    postToDelete: null,
   },
   mutations: {
     authenticate(state) {
@@ -57,6 +58,9 @@ const store = new Vuex.Store({
     },
     setShowPostCreateModal(state, show) {
       state.showPostCreateModal = show;
+    },
+    setPostToDelete(state, post) {
+      state.postToDelete = post;
     },
   },
   actions: {
@@ -186,6 +190,24 @@ const store = new Vuex.Store({
         resolve();
       });
     },
+    deletePost(context) {
+      return new Promise((resolve, reject) => {
+        const post = context.state.postToDelete;
+        axios
+          .delete('api/posts/' + post.id, {
+            headers: {
+              Authorization: 'Bearer ' + localStorage.getItem('jwt-token') || null,
+            },
+          })
+          .then(result => {
+            context.commit('setPostToDelete', null);
+            resolve(result);
+          })
+          .catch(error => {
+            reject(error);
+          });
+      });
+    },
   },
   getters: {
     authenticated: state => {
@@ -214,6 +236,9 @@ const store = new Vuex.Store({
     },
     showPostCreateModal: state => {
       return state.showPostCreateModal;
+    },
+    postToDelete: state => {
+      return state.postToDelete;
     },
   },
 });

@@ -23,7 +23,6 @@ export default {
     getTags() {
       this.$http.get('/api/tags/' + this.$router.currentRoute.params.tag).then(response => {
         this.posts = response.data.posts;
-        console.log(response.data);
       });
     },
     loadMore() {

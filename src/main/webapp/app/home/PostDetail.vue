@@ -19,6 +19,8 @@
         <p>
           {{ post.content }}
         </p>
+
+        <a :href="post.url" target="_blank">Go to original URL</a>
       </article>
 
       <!-- like/bookmark/comment -->

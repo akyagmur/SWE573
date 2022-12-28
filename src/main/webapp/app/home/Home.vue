@@ -45,7 +45,6 @@ export default {
     },
     setPostToEdit(post) {
       this.$store.dispatch('setShowPostCreateModal', true).then(() => {
-        console.log(post);
         this.$store.commit('setPostToEdit', post);
         this.$bootstrap.Modal.getOrCreateInstance(document.getElementById('newPostModal')).show();
       });

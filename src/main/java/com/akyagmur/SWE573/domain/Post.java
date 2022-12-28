@@ -5,6 +5,7 @@ import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Set;
 
+import javax.annotation.PreDestroy;
 import javax.persistence.*;
 import javax.validation.constraints.*;
 import org.hibernate.annotations.Cache;
@@ -241,6 +242,14 @@ public class Post implements Serializable {
     @PreUpdate
     public void preUpdate() {
         updated_at = ZonedDateTime.now();
+    }
+
+    @PreRemove
+    public void preRemove() {
+        // delete all tags from database
+        tags.forEach(tag -> tag.getPosts().remove(this));
+        //delete all comments from database
+        comments.forEach(comment -> comment.setPost(null));
     }
 
     @Override

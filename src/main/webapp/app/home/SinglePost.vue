@@ -25,7 +25,7 @@
       </div>
       <div class="d-flex gap-3 pt-2" v-if="isUsersPost(post.created_by)">
         <font-awesome-icon icon="fa-regular fa-pen-to-square" style="cursor: pointer" @click="setPostToEdit(post)" />
-        <font-awesome-icon icon="fa-solid fa-trash" style="cursor: pointer" class="text-danger" />
+        <font-awesome-icon icon="fa-solid fa-trash" style="cursor: pointer" class="text-danger" @click="showDeletePrompt(post)" />
       </div>
     </div>
     <div class="col-auto d-none d-lg-block align-self-center">
@@ -53,6 +53,10 @@ export default {
     },
     goToPostDetail(post) {
       this.$router.push({ name: 'PostDetail', params: { id: post.id } });
+    },
+    showDeletePrompt(post) {
+      this.$store.commit('setPostToDelete', post);
+      this.$bootstrap.Modal.getOrCreateInstance(document.getElementById('deletePostModal')).show();
     },
   },
 };

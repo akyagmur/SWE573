@@ -2,6 +2,7 @@ package com.akyagmur.swe573.service.impl;
 
 import com.akyagmur.swe573.domain.Post;
 import com.akyagmur.swe573.repository.PostRepository;
+import com.akyagmur.swe573.service.CommentService;
 import com.akyagmur.swe573.service.PostService;
 import com.akyagmur.swe573.service.UserService;
 import com.akyagmur.swe573.service.dto.PostDTO;
@@ -34,10 +35,13 @@ public class PostServiceImpl implements PostService {
 
     private final UserService userService;
 
-    public PostServiceImpl(PostRepository postRepository, PostMapper postMapper, UserService userService) {
+    private final CommentService commentService;
+
+    public PostServiceImpl(PostRepository postRepository, PostMapper postMapper, UserService userService, CommentService commentService) {
         this.postRepository = postRepository;
         this.postMapper = postMapper;
         this.userService = userService;
+        this.commentService = commentService;
     }
 
     @Override
@@ -110,6 +114,17 @@ public class PostServiceImpl implements PostService {
     @Override
     public void delete(Long id) {
         log.debug("Request to delete Post : {}", id);
+        Post post = postRepository.findById(id).get();
+
+        // delete all tags
+        post.getTags().forEach(tag -> {
+            tag.getPosts().remove(post);
+        });
+        // delete all comments
+        post.getComments().forEach(comment -> {
+            commentService.delete(comment.getId());
+        });
+
         postRepository.deleteById(id);
     }
 
