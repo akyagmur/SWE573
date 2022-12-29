@@ -8,6 +8,7 @@ import java.util.HashSet;
 import java.util.Locale;
 import java.util.Set;
 import javax.persistence.*;
+import javax.transaction.Transactional;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
@@ -16,6 +17,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.hibernate.annotations.BatchSize;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.Fetch;
 
 /**
  * A user.
@@ -91,6 +93,23 @@ public class User extends AbstractAuditingEntity<Long> implements Serializable {
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     @BatchSize(size = 20)
     private Set<Authority> authorities = new HashSet<>();
+
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+        name = "rel_post__bookmark",
+        joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
+        inverseJoinColumns = @JoinColumn(name = "post_id", referencedColumnName = "id")
+    )
+    Set<Post> bookmarks = new HashSet<>();
+
+    public Set<Post> getBookmarks() {
+        return bookmarks;
+    }
+
+    public void setBookmarks(Set<Post> bookmarks) {
+        this.bookmarks = bookmarks;
+    }
 
     public Long getId() {
         return id;

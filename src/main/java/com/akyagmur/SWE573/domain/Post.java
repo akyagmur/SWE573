@@ -77,6 +77,9 @@ public class Post implements Serializable {
     )
     Set<Tag> tags;
 
+    @ManyToMany(mappedBy = "bookmarks", fetch = FetchType.EAGER)
+    private Set<User> users;
+
     public Long getId() {
         return this.id;
     }

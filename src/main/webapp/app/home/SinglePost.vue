@@ -20,7 +20,7 @@
       <div class="d-flex gap-2 align-items-center justify-content-start">
         <a @click="goToPostDetail(post)" style="cursor: pointer" class="text-primary">Continue reading</a> |
         <a :href="post.url" target="_blank">Go to original URL</a> |
-        <font-awesome-icon icon="fa-regular fa-bookmark" style="cursor: pointer" />
+        <font-awesome-icon icon="fa-regular fa-bookmark" style="cursor: pointer" @click="bookmarkPost(post)" />
         <font-awesome-icon icon="fa-regular fa-heart" style="cursor: pointer" />
       </div>
       <div class="d-flex gap-3 pt-2" v-if="isUsersPost(post.created_by)">
@@ -57,6 +57,11 @@ export default {
     showDeletePrompt(post) {
       this.$store.commit('setPostToDelete', post);
       this.$bootstrap.Modal.getOrCreateInstance(document.getElementById('deletePostModal')).show();
+    },
+    bookmarkPost(post) {
+      this.$http.post(`/api/bookmark/${post.id}`, { postId: '2' }).then(response => {
+        this.$toast.success('Post bookmarked successfully');
+      });
     },
   },
 };
