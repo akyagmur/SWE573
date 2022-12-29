@@ -5,12 +5,12 @@ import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Set;
 
-import javax.annotation.PreDestroy;
 import javax.persistence.*;
 import javax.validation.constraints.*;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.validator.constraints.URL;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 /**
  * A Post.
@@ -79,6 +79,25 @@ public class Post implements Serializable {
 
     @ManyToMany(mappedBy = "bookmarks", fetch = FetchType.EAGER)
     private Set<User> users;
+
+    @ManyToMany(mappedBy = "likes", fetch = FetchType.EAGER)
+    private Set<User> liked_users;
+
+    public Boolean getIsLiked() {
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        if (principal == "anonymousUser") {
+            return false;
+        }
+
+        Long userId = ((User) principal).getId();
+        for (User user : liked_users) {
+            if (user.getId().equals(userId)) {
+                return true;
+            }
+        }
+        return false;
+    }
 
     public Long getId() {
         return this.id;

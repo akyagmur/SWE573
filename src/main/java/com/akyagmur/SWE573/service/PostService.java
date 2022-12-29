@@ -88,4 +88,18 @@ public interface PostService {
      * @param userId the id of the user.
      */
     Page<PostDTO> findAllPublicPostsOfUser(Pageable pageable, Long userId);
+
+    /**
+     * Get all liked posts of a user.
+     *
+     * @param userId the id of the user.
+     */
+    Page<PostDTO> findAllLikedPostsOfUser(Pageable pageable, Long userId);
+
+    /**
+     * Get all bookmarked posts of a user.
+     *
+     * @param userId the id of the user.
+     */
+    Page<PostDTO> findAllBookmarkedPostsOfUser(Pageable pageable, Long userId);
 }

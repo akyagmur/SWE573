@@ -36,4 +36,12 @@ public interface PostRepository extends JpaRepository<Post, Long> {
     // users own posts
     @Query("SELECT p FROM Post p WHERE p.is_private = false and p.created_by = :userId")
     Page<Post> findAllPublicPostsByUserId(@Param("userId") Long userId, Pageable pageable);
+
+    // user bookmarked posts
+    @Query(value = "SELECT p.* FROM post p WHERE p.id IN (SELECT b.post_id FROM rel_post__bookmark b WHERE b.user_id = ?1)", nativeQuery = true)
+    Page<Post> findAllBookmarkedPostsByUserId(@Param("userId") Long userId, Pageable pageable);
+
+    // user liked posts
+    @Query(value = "SELECT p.* FROM post p WHERE p.id IN (SELECT l.post_id FROM rel_post__like l WHERE l.user_id = ?1)", nativeQuery = true)
+    Page<Post> findAllLikedPostsByUserId(@Param("userId") Long userId, Pageable pageable);
 }

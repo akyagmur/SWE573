@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -23,11 +24,9 @@ import io.swagger.v3.oas.annotations.parameters.RequestBody;
  */
 @RestController
 @RequestMapping("/api")
-public class BookmarkResource {
+public class LikeResource {
 
     private final Logger log = LoggerFactory.getLogger(BookmarkResource.class);
-
-    private final PostService postService;
 
     private final PostRepository postRepository;
 
@@ -35,49 +34,51 @@ public class BookmarkResource {
 
     private final UserRepository userRepository;
 
-    public BookmarkResource(PostService postService, PostRepository postRepository, UserService userService, UserRepository userRepository) {
-        this.postService = postService;
+    public LikeResource(PostRepository postRepository, UserService userService, UserRepository userRepository) {
         this.postRepository = postRepository;
         this.userService = userService;
         this.userRepository = userRepository;
     }
 
     /**
-     * Add post to bookmark
+     * Like a post
+     *
+     * @param post
+     * @return
      */
-    @PostMapping("/bookmark/{id}")
+    @PostMapping("/like/{id}")
     public PostDTO bookmark(@RequestBody PostDTO post) {
-        log.debug("REST request to bookmark a post with id {}", post.getId());
-        Post postToBookmark = postRepository.findById(post.getId()).get();
+        log.debug("REST request to like a post with id {}", post.getId());
+        Post postToLike = postRepository.findById(post.getId()).get();
         User user = userRepository.findById(userService.getUserWithAuthorities().get().getId()).get();
-        var bookmarks = user.getBookmarks();
+        var likes = user.getLikes();
 
-        if(bookmarks.contains(postToBookmark)) {
-            bookmarks.remove(postToBookmark);
-            user.setBookmarks(bookmarks);
+        if(likes.contains(postToLike)) {
+            likes.remove(postToLike);
+            user.setLikes(likes);
             userRepository.save(user);
             return post;
         }
 
-        bookmarks.add(postToBookmark);
-        user.setBookmarks(bookmarks);
+        likes.add(postToLike);
+        user.setLikes(likes);
         userRepository.save(user);
 
         return post;
     }
 
     /**
-     * Get user's bookmarks
+     * Get user's liked post ids
      *
      * @param post
      * @return
      */
-    @PostMapping("/user-bookmarks")
-    public List<Long> getUserBookmarks() {
-        log.debug("REST request to get user's bookmarks");
+    @PostMapping("/user-likes")
+    public ResponseEntity<List<Long>> getUserLikes() {
+        log.debug("REST request to get user's liked posts");
         User user = userRepository.findById(userService.getUserWithAuthorities().get().getId()).get();
-        var bookmarks = user.getBookmarks();
-        List<Long> ids = bookmarks.stream().map(Post::getId).toList();
-        return ids;
+        var likes = user.getLikes();
+        List<Long> ids = likes.stream().map(Post::getId).toList();
+        return ResponseEntity.ok(ids);
     }
 }

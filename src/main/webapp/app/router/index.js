@@ -72,6 +72,16 @@ const router = new Router({
       component: MyPosts
     },
     {
+      path: '/profile/my-likes',
+      name: 'MyLikes',
+      component: () => import('@/profile/MyLikes.vue')
+    },
+    {
+      path: '/profile/my-bookmarks',
+      name: 'MyBookmarks',
+      component: () => import('@/profile/MyBookmarks.vue')
+    },
+    {
       path: '/posts/by-user/:login',
       name: 'UserPosts',
       component: UserPosts

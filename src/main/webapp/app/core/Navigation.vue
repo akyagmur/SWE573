@@ -58,8 +58,9 @@
             <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">Profile</button>
             <ul class="dropdown-menu">
               <li><router-link class="dropdown-item" to="/profile/my-posts">My Posts</router-link></li>
+              <li><router-link class="dropdown-item" to="/profile/my-bookmarks">My Bookmarks</router-link></li>
+              <li><router-link class="dropdown-item" to="/profile/my-likes">Liked Posts</router-link></li>
               <li><a class="dropdown-item" href="#">Spaces</a></li>
-              <li><a class="dropdown-item" href="#">Bookmarks</a></li>
               <li><router-link class="dropdown-item" to="/profile/edit">Settings</router-link></li>
               <li><a class="dropdown-item" href="#" @click="$store.dispatch('logout')">Logout</a></li>
             </ul>

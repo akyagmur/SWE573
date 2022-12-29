@@ -37,7 +37,8 @@ public class PostServiceImpl implements PostService {
 
     private final CommentService commentService;
 
-    public PostServiceImpl(PostRepository postRepository, PostMapper postMapper, UserService userService, CommentService commentService) {
+    public PostServiceImpl(PostRepository postRepository, PostMapper postMapper, UserService userService,
+            CommentService commentService) {
         this.postRepository = postRepository;
         this.postMapper = postMapper;
         this.userService = userService;
@@ -65,13 +66,15 @@ public class PostServiceImpl implements PostService {
         post.setUpdated_by(userId);
         post = postRepository.save(post);
         return postMapper.toDto(post);
-        /* log.debug("Request to update Post : {}", postDTO);
-
-        Post post = postRepository.findById(postDTO.getId()).get();
-        Long userId = userService.getUserWithAuthorities().get().getId();
-        post.setUpdated_by(userId);
-        post = postRepository.save(post);
-        return postMapper.toDto(post); */
+        /*
+         * log.debug("Request to update Post : {}", postDTO);
+         *
+         * Post post = postRepository.findById(postDTO.getId()).get();
+         * Long userId = userService.getUserWithAuthorities().get().getId();
+         * post.setUpdated_by(userId);
+         * post = postRepository.save(post);
+         * return postMapper.toDto(post);
+         */
     }
 
     @Override
@@ -154,5 +157,19 @@ public class PostServiceImpl implements PostService {
     public Page<PostDTO> findAllPublicPostsOfUser(Pageable pageable, Long userId) {
         log.debug("Request to get all Posts by user id : {}", userId);
         return postRepository.findAllPublicPostsByUserId(userId, pageable).map(postMapper::toDto);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Page<PostDTO> findAllLikedPostsOfUser(Pageable pageable, Long userId) {
+        log.debug("Request to get all liked Posts by user id : {}", userId);
+        return postRepository.findAllLikedPostsByUserId(userId, pageable).map(postMapper::toDto);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Page<PostDTO> findAllBookmarkedPostsOfUser(Pageable pageable, Long userId) {
+        log.debug("Request to get all bookmarked Posts by user id : {}", userId);
+        return postRepository.findAllBookmarkedPostsByUserId(userId, pageable).map(postMapper::toDto);
     }
 }

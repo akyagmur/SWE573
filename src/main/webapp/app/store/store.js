@@ -17,6 +17,8 @@ const store = new Vuex.Store({
     postToEdit: null,
     showPostCreateModal: false,
     postToDelete: null,
+    likedPostsOfUser: JSON.parse(localStorage.getItem('likedPostsOfUser')) || [],
+    bookmarksOfUser: JSON.parse(localStorage.getItem('bookmarksOfUser')) || [],
   },
   mutations: {
     authenticate(state) {
@@ -61,6 +63,12 @@ const store = new Vuex.Store({
     },
     setPostToDelete(state, post) {
       state.postToDelete = post;
+    },
+    setLikedPostsOfUser(state, posts) {
+      state.likedPostsOfUser = posts;
+    },
+    setBookmarksOfUser(state, posts) {
+      state.bookmarksOfUser = posts;
     },
   },
   actions: {
@@ -208,6 +216,42 @@ const store = new Vuex.Store({
           });
       });
     },
+    fetchLikedPostsOfUser(context) {
+      return new Promise((resolve, reject) => {
+        axios
+          .post('/api/user-likes', {
+            headers: {
+              Authorization: 'Bearer ' + localStorage.getItem('jwt-token') || null,
+            },
+          })
+          .then(result => {
+            context.commit('setLikedPostsOfUser', result.data);
+            localStorage.setItem('likedPostsOfUser', JSON.stringify(result.data));
+            resolve(result);
+          })
+          .catch(error => {
+            reject(error);
+          });
+      });
+    },
+    fetchBookmarksOfUser(context) {
+      return new Promise((resolve, reject) => {
+        axios
+          .post('/api/user-bookmarks', {
+            headers: {
+              Authorization: 'Bearer ' + localStorage.getItem('jwt-token') || null,
+            },
+          })
+          .then(result => {
+            context.commit('setBookmarksOfUser', result.data);
+            localStorage.setItem('bookmarksOfUser', JSON.stringify(result.data));
+            resolve(result);
+          })
+          .catch(error => {
+            reject(error);
+          });
+      });
+    },
   },
   getters: {
     authenticated: state => {
@@ -239,6 +283,12 @@ const store = new Vuex.Store({
     },
     postToDelete: state => {
       return state.postToDelete;
+    },
+    likedPostsOfUser: state => {
+      return state.likedPostsOfUser;
+    },
+    bookmarksOfUser: state => {
+      return state.bookmarksOfUser;
     },
   },
 });

@@ -19,11 +19,28 @@
       </div>
       <div class="d-flex gap-2 align-items-center justify-content-start">
         <a @click="goToPostDetail(post)" style="cursor: pointer" class="text-primary">Continue reading</a> |
-        <a :href="post.url" target="_blank">Go to original URL</a> |
-        <font-awesome-icon icon="fa-regular fa-bookmark" style="cursor: pointer" @click="bookmarkPost(post)" />
-        <font-awesome-icon icon="fa-regular fa-heart" style="cursor: pointer" />
+        <a :href="post.url" target="_blank">Go to original URL</a>
+        <template v-if="this.$store.getters.authenticated">
+          |
+          <font-awesome-icon
+            v-if="isBookmarkedByUser(post)"
+            icon="fa-solid fa-bookmark"
+            style="cursor: pointer"
+            @click="bookmarkPost(post)"
+            class="text-warning"
+          />
+          <font-awesome-icon v-else icon="fa-regular fa-bookmark" style="cursor: pointer" @click="bookmarkPost(post)" />
+          <font-awesome-icon
+            v-if="isLikedByUser(post)"
+            icon="fa-solid fa-heart"
+            style="cursor: pointer"
+            @click="likePost(post)"
+            class="text-danger"
+          />
+          <font-awesome-icon v-else icon="fa-regular fa-heart" style="cursor: pointer" @click="likePost(post)" />
+        </template>
       </div>
-      <div class="d-flex gap-3 pt-2" v-if="isUsersPost(post.created_by)">
+      <div class="d-flex gap-3 pt-2" v-if="isUsersPost(post.created_by) && this.$store.getters.authenticated">
         <font-awesome-icon icon="fa-regular fa-pen-to-square" style="cursor: pointer" @click="setPostToEdit(post)" />
         <font-awesome-icon icon="fa-solid fa-trash" style="cursor: pointer" class="text-danger" @click="showDeletePrompt(post)" />
       </div>
@@ -60,8 +77,32 @@ export default {
     },
     bookmarkPost(post) {
       this.$http.post(`/api/bookmark/${post.id}`, { postId: '2' }).then(response => {
+        if (this.isBookmarkedByUser(post)) {
+          this.$toast.success('Post unbookmarked successfully');
+        } else {
+          this.$toast.success('Post bookmarked successfully');
+        }
+
         this.$toast.success('Post bookmarked successfully');
+        this.$store.dispatch('fetchBookmarksOfUser');
       });
+    },
+    likePost(post) {
+      this.$http.post(`/api/like/${post.id}`, { postId: '2' }).then(response => {
+        if (this.isLikedByUser(post)) {
+          this.$toast.success('Post unliked successfully');
+        } else {
+          this.$toast.success('Post liked successfully');
+        }
+
+        this.$store.dispatch('fetchLikedPostsOfUser');
+      });
+    },
+    isLikedByUser(post) {
+      return this.$store.getters.likedPostsOfUser.some(likedPost => likedPost === post.id);
+    },
+    isBookmarkedByUser(post) {
+      return this.$store.getters.bookmarksOfUser.some(bookmark => bookmark === post.id);
     },
   },
 };

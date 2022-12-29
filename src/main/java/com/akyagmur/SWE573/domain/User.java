@@ -8,7 +8,6 @@ import java.util.HashSet;
 import java.util.Locale;
 import java.util.Set;
 import javax.persistence.*;
-import javax.transaction.Transactional;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
@@ -17,7 +16,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.hibernate.annotations.BatchSize;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
-import org.hibernate.annotations.Fetch;
 
 /**
  * A user.
@@ -102,6 +100,22 @@ public class User extends AbstractAuditingEntity<Long> implements Serializable {
         inverseJoinColumns = @JoinColumn(name = "post_id", referencedColumnName = "id")
     )
     Set<Post> bookmarks = new HashSet<>();
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+        name = "rel_post__like",
+        joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
+        inverseJoinColumns = @JoinColumn(name = "post_id", referencedColumnName = "id")
+    )
+    Set<Post> likes = new HashSet<>();
+
+    public Set<Post> getLikes() {
+        return likes;
+    }
+
+    public void setLikes(Set<Post> likes) {
+        this.likes = likes;
+    }
 
     public Set<Post> getBookmarks() {
         return bookmarks;

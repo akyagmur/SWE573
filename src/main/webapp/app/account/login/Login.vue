@@ -62,6 +62,8 @@ export default {
         .then(() => {
           this.authenticationError = false;
           this.$bootstrap.Modal.getInstance(this.$refs.modal).hide();
+          this.$store.dispatch('fetchLikedPostsOfUser');
+          this.$store.dispatch('fetchBookmarksOfUser');
         })
         .catch(() => {
           this.authenticationError = true;
