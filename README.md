@@ -8,9 +8,9 @@
 ## Demo
 
 This app is deployed on AWS EC2 as dockerized. You can access it
-from [here](http://3.124.115.84/).
+from [here](http://3.121.93.216/).
 
-[http://3.124.115.84/](http://3.124.115.84/)
+[http://3.121.93.216/](http://3.121.93.216/)
 
 ## Introduction
 
