@@ -76,10 +76,14 @@ export default {
         this.registerSuccess = null;
         let data = {
           login: this.login,
+          firstName: this.firstName,
+          lastName: this.lastName,
           email: this.email,
           password: this.password,
         };
         this.$store.dispatch('register', data).then(() => {
+          this.$toast.success('Registration success!');
+          this.$router.push('/');
           this.registerSuccess = 'OK';
         });
       }

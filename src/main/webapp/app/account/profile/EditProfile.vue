@@ -7,7 +7,7 @@
 
           <div class="form-group">
             <label for="login">Login</label>
-            <input type="text" class="form-control" id="login" v-model="userAccount.login" required />
+            <input type="text" class="form-control" id="login" v-model="userAccount.login" disabled required />
           </div>
           <!-- First Name -->
           <div class="form-group">
@@ -55,12 +55,18 @@ export default {
   },
   methods: {
     save() {
-      this.$http.post('api/account', this.userAccount).then(() => {
-        this.$store.dispatch('retrieveAccount').then(account => {
-          this.userAccount = account;
-          this.$toast.success('Profile saved!');
+      this.$http
+        .post('api/account', this.userAccount)
+        .then(() => {
+          this.$store.dispatch('retrieveAccount').then(account => {
+            this.userAccount = account;
+            this.$toast.success('Profile saved!');
+          });
+        })
+        .catch(error => {
+          var message = error.response.data.title;
+          this.$toast.error(message);
         });
-      });
     },
   },
 };

@@ -2,7 +2,9 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 import axios from 'axios';
+import VueToast from 'vue-toast-notification';
 
+Vue.use(VueToast);
 Vue.use(Vuex);
 
 const store = new Vuex.Store({
@@ -139,6 +141,14 @@ const store = new Vuex.Store({
             resolve(result);
           })
           .catch(error => {
+            var message = error.response.data.title;
+            Vue.$toast.open({
+              message: message,
+              type: 'error',
+              position: 'top-right',
+              duration: 5000,
+            });
+            this.$router.push('/home');
             reject(error);
           });
       });
