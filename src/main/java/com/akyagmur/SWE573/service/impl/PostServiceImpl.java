@@ -172,4 +172,11 @@ public class PostServiceImpl implements PostService {
         log.debug("Request to get all bookmarked Posts by user id : {}", userId);
         return postRepository.findAllBookmarkedPostsByUserId(userId, pageable).map(postMapper::toDto);
     }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Page<PostDTO> findAllPostsByTag(Pageable pageable, Long tagId) {
+        log.debug("Request to get all Posts by tag id : {}", tagId);
+        return postRepository.findAllPostsByTagId(tagId, pageable).map(postMapper::toDto);
+    }
 }

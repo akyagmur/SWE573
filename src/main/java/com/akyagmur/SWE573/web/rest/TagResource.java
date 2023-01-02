@@ -150,9 +150,9 @@ public class TagResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the tagDTO, or with status {@code 404 (Not Found)}.
      */
     @GetMapping("/tags/{name}")
-    public Tag getTag(@PathVariable String name) {
+    public TagDTO getTag(@PathVariable String name) {
         log.debug("REST request to get Tag : {}", name);
-        Tag tag = tagRepository.findByName(name).get();
+        TagDTO tag = tagService.findByName(name).get();
         return tag;
     }
 

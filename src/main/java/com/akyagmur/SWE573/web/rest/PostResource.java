@@ -299,4 +299,21 @@ public class PostResource {
         }
         return "";
     }
+
+    /**
+     *  Return posts by a given tag id
+     *
+     * @param pageable
+     * @param tagId
+     */
+    @GetMapping("/tag-posts/{tagId}")
+    public ResponseEntity<List<PostDTO>> getPostsByTag(
+            @SortDefault(sort = "id", direction = Sort.Direction.DESC) @PageableDefault(size = 5, sort = "id") Pageable pageable,
+            @PathVariable Long tagId) {
+        log.debug("REST request to get a page of Contents");
+        Page<PostDTO> page = postService.findAllPostsByTag(pageable, tagId);
+        HttpHeaders headers = PaginationUtil
+                .generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+        return ResponseEntity.ok().headers(headers).body(page.getContent());
+    }
 }

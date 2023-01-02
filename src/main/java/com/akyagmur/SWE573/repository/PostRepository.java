@@ -44,4 +44,8 @@ public interface PostRepository extends JpaRepository<Post, Long> {
     // user liked posts
     @Query(value = "SELECT p.* FROM post p WHERE p.id IN (SELECT l.post_id FROM rel_post__like l WHERE l.user_id = ?1)", nativeQuery = true)
     Page<Post> findAllLikedPostsByUserId(@Param("userId") Long userId, Pageable pageable);
+
+    // posts of a tag
+    @Query(value = "SELECT p.* FROM post p WHERE p.id IN (SELECT t.post_id FROM rel_post__tag t WHERE t.tag_id = ?1)", nativeQuery = true)
+    Page<Post> findAllPostsByTagId(@Param("tagId") Long tagId, Pageable pageable);
 }

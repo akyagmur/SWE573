@@ -78,12 +78,10 @@ export default {
     bookmarkPost(post) {
       this.$http.post(`/api/bookmark/${post.id}`, { postId: '2' }).then(response => {
         if (this.isBookmarkedByUser(post)) {
-          this.$toast.success('Post unbookmarked successfully');
+          this.$toast.success('Post removed from bookmarks successfully');
         } else {
           this.$toast.success('Post bookmarked successfully');
         }
-
-        this.$toast.success('Post bookmarked successfully');
         this.$store.dispatch('fetchBookmarksOfUser');
       });
     },

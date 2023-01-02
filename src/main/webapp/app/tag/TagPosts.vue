@@ -13,6 +13,7 @@ export default {
   },
   data() {
     return {
+      tag: {},
       posts: [],
     };
   },
@@ -22,7 +23,13 @@ export default {
   methods: {
     getTags() {
       this.$http.get('/api/tags/' + this.$router.currentRoute.params.tag).then(response => {
-        this.posts = response.data.posts;
+        this.tag = response.data;
+        this.fetchPosts();
+      });
+    },
+    fetchPosts() {
+      this.$http.get('/api/tag-posts/' + this.tag.id).then(response => {
+        this.posts = response.data;
       });
     },
     loadMore() {

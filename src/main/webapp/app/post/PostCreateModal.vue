@@ -156,6 +156,7 @@ export default {
           this.resetPostForm();
           this.$store.commit('setPostToEdit', null);
           this.$store.dispatch('fetchPosts');
+          this.$router.go();
         },
         error => {
           this.postErrors = error.response.data.fieldErrors.reduce((acc, fieldError) => {

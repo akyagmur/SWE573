@@ -102,4 +102,12 @@ public interface PostService {
      * @param userId the id of the user.
      */
     Page<PostDTO> findAllBookmarkedPostsOfUser(Pageable pageable, Long userId);
+
+    /**
+     * Find all posts by tag
+     *
+     * @param pageable the pagination information.
+     * @param tagId the id of the tag.
+     */
+    Page<PostDTO> findAllPostsByTag(Pageable pageable, Long tagId);
 }
