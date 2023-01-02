@@ -1,13 +1,14 @@
 package com.akyagmur.swe573.web.rest;
 
 import java.util.List;
+import java.util.stream.Collectors;
+
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
 import com.akyagmur.swe573.domain.Post;
 import com.akyagmur.swe573.domain.User;
 import com.akyagmur.swe573.repository.PostRepository;
@@ -77,7 +78,7 @@ public class BookmarkResource {
         log.debug("REST request to get user's bookmarks");
         User user = userRepository.findById(userService.getUserWithAuthorities().get().getId()).get();
         var bookmarks = user.getBookmarks();
-        List<Long> ids = bookmarks.stream().map(Post::getId).toList();
+        List<Long> ids = bookmarks.stream().map(Post::getId).collect(Collectors.toList());
         return ids;
     }
 }

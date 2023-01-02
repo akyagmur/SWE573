@@ -1,6 +1,7 @@
 package com.akyagmur.swe573.web.rest;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -78,7 +79,7 @@ public class LikeResource {
         log.debug("REST request to get user's liked posts");
         User user = userRepository.findById(userService.getUserWithAuthorities().get().getId()).get();
         var likes = user.getLikes();
-        List<Long> ids = likes.stream().map(Post::getId).toList();
+        List<Long> ids = likes.stream().map(Post::getId).collect(Collectors.toList());
         return ResponseEntity.ok(ids);
     }
 }
